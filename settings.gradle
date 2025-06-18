@@ -1,0 +1,3 @@
+include 'my_app:reward-calculation-app'
+include 'my_app:reward-payment-app'
+
