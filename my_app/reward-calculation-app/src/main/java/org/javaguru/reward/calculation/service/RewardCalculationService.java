@@ -1,5 +1,7 @@
 package org.javaguru.reward.calculation.service;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.javaguru.reward.calculation.service.domain.Employee;
 import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.domain.Tariff;
@@ -20,11 +22,12 @@ import java.util.List;
  */
 
 @Service
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardCalculationService {
 
-    @Autowired private RewardRepository rewardRepository;
-    @Autowired private TariffRepository tariffRepository;
-    @Autowired private RewardPaymentClient rewardPaymentClient;
+    private final RewardRepository rewardRepository;
+    private final TariffRepository tariffRepository;
+    private final RewardPaymentClient rewardPaymentClient;
 
     @Transactional
     public void calculateRewards(List<Employee> employees) {

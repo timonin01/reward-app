@@ -1,11 +1,11 @@
 version: '1'
 
 networks:
-  javaguru:
+  tim:
 
 services:
   reward-calculation-db:
-    networks: [javaguru]
+    networks: [tim]
     container_name: reward-calculation-db
     image: mysql:8.0
     environment:
@@ -15,7 +15,7 @@ services:
       - "3000:3306"
 
   reward-payment-db:
-    networks: [javaguru]
+    networks: [tim]
     container_name: reward-payment-db
     image: mysql:8.0
     environment:
@@ -25,7 +25,7 @@ services:
       - "3001:3306"
 
   reward-calculation-app:
-    networks: [javaguru]
+    networks: [tim]
     container_name: reward-calculation-app
     image: reward-calculation-app:1.0.1
     ports:
@@ -34,7 +34,7 @@ services:
       - reward-calculation-db
 
   reward-payment-app:
-    networks: [javaguru]
+    networks: [tim]
     container_name: reward-payment-app
     image: reward-payment-app:1.0.1
     ports:

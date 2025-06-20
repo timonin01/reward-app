@@ -1,5 +1,7 @@
 package org.javaguru.reward.payment.rest;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.javaguru.reward.payment.service.RewardPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,9 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/reward/payment")
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardPaymentController {
 
-    @Autowired private RewardPaymentService rewardPaymentService;
+    private final RewardPaymentService rewardPaymentService;
 
     @PostMapping(path = "/",
             consumes = "application/json",
