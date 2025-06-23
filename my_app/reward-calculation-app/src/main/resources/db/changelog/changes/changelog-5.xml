@@ -15,6 +15,15 @@
 
             INSERT INTO employees(first_name, last_name, bonus_coefficient)
             VALUES('Mister', 'Z', 1.2);
+
+            INSERT INTO employees(first_name, last_name, bonus_coefficient)
+            VALUES('Andrey', 'Timonin', 1.5);
+
+            INSERT INTO employees(first_name, last_name, bonus_coefficient)
+            VALUES('Oleg', 'Timonin', 1.2);
+
+            INSERT INTO employees(first_name, last_name, bonus_coefficient)
+            VALUES('Mamut', 'Rahal', 1.2);
         </sql>
     </changeSet>
 

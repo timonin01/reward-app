@@ -8,6 +8,8 @@ import org.javaguru.reward.calculation.service.domain.Tariff;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardCalculationService {
 
+    private final Logger logger = LoggerFactory.getLogger(RewardCalculationService.class);
+
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
@@ -38,7 +42,7 @@ public class RewardCalculationService {
                     Tariff tariff = tariffRepository.findByJobType(reward.getJobType()).get();
                     double amount = (1 + employee.getBonusCoefficient()) * tariff.getAmount();
                     rewardPaymentClient.payReward(employee.getId(), amount);
-                    System.out.println("Отправлен платеж");
+                    logger.info("Payment sent");
                     reward.setStatus("PAID");
                     rewardRepository.save(reward);
                 }
