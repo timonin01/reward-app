@@ -40,6 +40,21 @@
             WHERE ep.first_name = 'Mister' and ep.last_name = 'Y';
 
             INSERT INTO rewards(employee_id, job_type, reward_status)
+            SELECT ep.id, 'speech', null
+            FROM employees as ep
+            WHERE ep.first_name = 'Andrey' and ep.last_name = 'Timonin';
+
+            INSERT INTO rewards(employee_id, job_type, reward_status)
+            SELECT ep.id, 'lesson', null
+            FROM employees as ep
+            WHERE ep.first_name = 'Oleg' and ep.last_name = 'Timonin';
+
+            INSERT INTO rewards(employee_id, job_type, reward_status)
+            SELECT ep.id, 'lesson', null
+            FROM employees as ep
+            WHERE ep.first_name = 'Mamut' and ep.last_name = 'Rahal';
+
+            INSERT INTO rewards(employee_id, job_type, reward_status)
             SELECT ep.id, 'help', null
             FROM employees as ep
             WHERE ep.first_name = 'Mister' and ep.last_name = 'Z';
