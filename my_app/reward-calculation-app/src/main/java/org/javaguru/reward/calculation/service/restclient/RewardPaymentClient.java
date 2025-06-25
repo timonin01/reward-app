@@ -9,6 +9,7 @@ import org.springframework.web.client.RestClient;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardPaymentClient {
 
+//    Создается в RewardPaymentClientConfig
     private final RestClient rewardPaymentRestClient;
 
     public void payReward(Long employeeId, Double amount) {
