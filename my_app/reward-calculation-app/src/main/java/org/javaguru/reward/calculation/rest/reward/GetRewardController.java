@@ -28,10 +28,9 @@ public class GetRewardController {
     private RewardDTO searchEmployeeInDb(Long id){
         Optional<Reward> reward = rewardRepository.findById(id);
         if(reward.isPresent()){
-            RewardDTO dto = createRewardDTO(reward.get());
-            return dto;
+            return createRewardDTO(reward.get());
         }
-        throw new IllegalArgumentException("Employee not found by id " + id);
+        throw new IllegalArgumentException("Reward not found by id " + id);
     }
 
     private RewardDTO createRewardDTO(Reward reward){

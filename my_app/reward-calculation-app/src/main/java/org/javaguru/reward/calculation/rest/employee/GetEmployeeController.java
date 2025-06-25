@@ -28,8 +28,7 @@ public class GetEmployeeController {
     private EmployeeDTO searchEmployeeInDb(Long id){
         Optional<Employee> employee = employeeRepository.findById(id);
         if(employee.isPresent()){
-            EmployeeDTO dto = createEmployeeDTO(employee.get());
-            return dto;
+            return createEmployeeDTO(employee.get());
         }
         throw new IllegalArgumentException("Employee not found by id " + id);
     }
