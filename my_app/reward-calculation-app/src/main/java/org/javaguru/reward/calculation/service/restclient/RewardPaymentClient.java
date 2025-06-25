@@ -3,9 +3,10 @@ package org.javaguru.reward.calculation.service.restclient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-@Component
+@Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardPaymentClient {
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class CreateRewardController {
 
-    private RewardRepository rewardRepository;
+    private final RewardRepository rewardRepository;
 
     @PostMapping(path = "/",
             consumes = "application/json",
@@ -31,6 +31,7 @@ public class CreateRewardController {
         reward.setEmployeeId(request.getEmployeeId());
         reward.setStatus(request.getStatus());
         reward.setJobType(request.getJobType());
+        rewardRepository.save(reward);
         return reward;
     }
 
