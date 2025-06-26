@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.reward.calculation.rest.employee.CreateEmployeeRequest;
 import org.javaguru.reward.calculation.rest.employee.CreateEmployeeResponse;
+import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Tariff;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class CreateTariffController {
     private Tariff saveTariffInDB(CreateTariffRequest tariffRequest){
         Tariff tariff = new Tariff();
         tariff.setAmount(tariffRequest.getAmount());
-        tariff.setJobType(tariffRequest.getJobType());
+        tariff.setJobType(JobType.valueOf(tariffRequest.getJobType()));
         tariffRepository.save(tariff);
         return tariff;
     }
@@ -40,7 +41,7 @@ public class CreateTariffController {
         TariffDTO tariffDTO = new TariffDTO();
         tariffDTO.setId(tariff.getId());
         tariffDTO.setAmount(tariff.getAmount());
-        tariffDTO.setJobType(tariff.getJobType());
+        tariffDTO.setJobType(tariff.getJobType().name());
         return tariffDTO;
     }
 

@@ -37,7 +37,7 @@ public class GetTariffController {
         TariffDTO tariffDTO = new TariffDTO();
         tariffDTO.setId(tariff.getId());
         tariffDTO.setAmount(tariff.getAmount());
-        tariffDTO.setJobType(tariff.getJobType());
+        tariffDTO.setJobType(tariff.getJobType().name());
         return tariffDTO;
     }
 

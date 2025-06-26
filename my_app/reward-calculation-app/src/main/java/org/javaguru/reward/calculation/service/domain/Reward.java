@@ -1,11 +1,6 @@
 package org.javaguru.reward.calculation.service.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +22,9 @@ public class Reward {
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "job_type", nullable = false)
-    private String jobType;
+    private JobType jobType;
 
     @Column(name = "reward_status")
     private String status;

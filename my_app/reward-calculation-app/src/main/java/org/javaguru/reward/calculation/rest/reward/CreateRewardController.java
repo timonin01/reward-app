@@ -2,6 +2,7 @@ package org.javaguru.reward.calculation.rest.reward;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class CreateRewardController {
         Reward reward = new Reward();
         reward.setEmployeeId(request.getEmployeeId());
         reward.setStatus(request.getStatus());
-        reward.setJobType(request.getJobType());
+        reward.setJobType(JobType.valueOf(request.getJobType()));
         rewardRepository.save(reward);
         return reward;
     }
@@ -40,7 +41,7 @@ public class CreateRewardController {
         dto.setId(reward.getId());
         dto.setEmployeeId(reward.getEmployeeId());
         dto.setStatus(reward.getStatus());
-        dto.setJobType(reward.getJobType());
+        dto.setJobType(reward.getJobType().name());
         return dto;
     }
 
