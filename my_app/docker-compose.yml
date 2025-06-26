@@ -32,7 +32,7 @@ services:
       - "8080:8080"
     volumes:
       - ./wait-for-it.sh:/wait-for-it.sh
-    command: ["sh", "-c", "chmod +x /wait-for-it.sh && /wait-for-it.sh reward-calculation-db:3306 --timeout=30 -- java -jar /reward-calculation-app.jar --spring.profiles.active=mysql-container"]
+    command: ["sh", "-c", "chmod +x /wait-for-it.sh && /wait-for-it.sh reward-calculation-db:3306 --timeout=30 -- java -jar /reward-calculation-app.jar"]
     depends_on:
       - reward-calculation-db
 
@@ -44,6 +44,6 @@ services:
       - "8090:8090"
     volumes:
       - ./wait-for-it.sh:/wait-for-it.sh
-    command: ["sh", "-c", "chmod +x /wait-for-it.sh && /wait-for-it.sh reward-payment-db:3306 --timeout=30 -- java -jar /reward-payment-app.jar --spring.profiles.active=mysql-container"]
+    command: ["sh", "-c", "chmod +x /wait-for-it.sh && /wait-for-it.sh reward-payment-db:3306 --timeout=30 -- java -jar /reward-payment-app.jar"]
     depends_on:
       - reward-payment-db
