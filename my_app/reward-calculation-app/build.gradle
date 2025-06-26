@@ -70,7 +70,7 @@ jar {
 bootJar {
 	enabled = true
 	archiveBaseName = 'reward-calculation-app'
-	archiveVersion = '1.0.1'
+	archiveVersion = '1.0.2'
 }
 
 dockerPrepare {

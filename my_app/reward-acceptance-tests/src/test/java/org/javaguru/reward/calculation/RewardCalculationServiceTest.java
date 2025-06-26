@@ -13,61 +13,196 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
     @Test
-    public void firstTest() {
-        // clean db
-        cleanPaymentDb(true);
-        cleanRewardDb(true, true, true);
+    public void shouldPayJobType_HELP() {
+
+        cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
 
         // create rewards
-        RewardDTO rewardDTO1 = createReward(employeeDTO1.getId(), "HELP", null);
-        RewardDTO rewardDTO2 = createReward(employeeDTO1.getId(), "SPEECH", null);
-        RewardDTO rewardDTO3 = createReward(employeeDTO1.getId(), "LESSON", null);
+        RewardDTO rewardDTO = createReward(employeeDTO.getId(), "HELP", null);
 
         // create tariffs
-        createTariff("LESSON", 10.0);
-        createTariff("SPEECH", 20.0);
         createTariff("HELP", 30.0);
 
         // invoke calculateRewards()
         rewardCalculation();
 
-        // check rewards
-        rewardDTO1 = getReward(rewardDTO1.getId());
-        assertNotNull(rewardDTO1.getId());
-        assertEquals(rewardDTO1.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(rewardDTO1.getJobType(), "HELP");
-        assertEquals(rewardDTO1.getStatus(), "PAID");
-
-        rewardDTO2 = getReward(rewardDTO2.getId());
-        assertNotNull(rewardDTO2.getId());
-        assertEquals(rewardDTO2.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(rewardDTO2.getJobType(), "SPEECH");
-        assertEquals(rewardDTO2.getStatus(), "PAID");
-
-        rewardDTO3 = getReward(rewardDTO3.getId());
-        assertNotNull(rewardDTO3.getId());
-        assertEquals(rewardDTO3.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(rewardDTO3.getJobType(), "LESSON");
-        assertEquals(rewardDTO3.getStatus(), "PAID");
+        // check Reward
+        rewardDTO = getReward(rewardDTO.getId());
+        checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
 
         // check payments
-        PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 15.0);
-        assertNotNull(paymentDTO1.getId());
-        assertEquals(paymentDTO1.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(paymentDTO1.getAmount(), 15.0, 0.0001);
+        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 45.0);
+        checkPayment(paymentDTO, employeeDTO, 45.0);
+    }
 
-        PaymentDTO paymentDTO2 = getPayment(employeeDTO1.getId(), 30.0);
-        assertNotNull(paymentDTO2.getId());
-        assertEquals(paymentDTO2.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(paymentDTO2.getAmount(), 30.0, 0.0001);
+    @Test
+    public void shouldPayJobType_SPEECH() {
 
-        PaymentDTO paymentDTO3 = getPayment(employeeDTO1.getId(), 45.0);
-        assertNotNull(paymentDTO3.getId());
-        assertEquals(paymentDTO3.getEmployeeId(), employeeDTO1.getId());
-        assertEquals(paymentDTO3.getAmount(), 45.0, 0.0001);
+        cleanRewardAndPaymentDB();
+
+        // create employees
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
+
+        // create rewards
+        RewardDTO rewardDTO = createReward(employeeDTO.getId(), "SPEECH", null);
+
+        // create tariffs
+        createTariff("SPEECH", 20.0);
+
+        // invoke calculateRewards()
+        rewardCalculation();
+
+        // check Reward
+        rewardDTO = getReward(rewardDTO.getId());
+        checkReward(rewardDTO, employeeDTO, "SPEECH", "PAID");
+
+        // check payments
+        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
+        checkPayment(paymentDTO, employeeDTO, 30.0);
+    }
+
+    @Test
+    public void shouldPayJobType_LESSON() {
+
+        cleanRewardAndPaymentDB();
+
+        // create employees
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
+
+        // create rewards
+        RewardDTO rewardDTO = createReward(employeeDTO.getId(), "LESSON", null);
+
+        // create tariffs
+        createTariff("LESSON", 20.0);
+
+        // invoke calculateRewards()
+        rewardCalculation();
+
+        // check Reward
+        rewardDTO = getReward(rewardDTO.getId());
+        checkReward(rewardDTO, employeeDTO, "LESSON", "PAID");
+
+        // check payments
+        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
+        checkPayment(paymentDTO, employeeDTO, 30.0);
+    }
+
+    @Test
+    public void shouldPayJobType_HELP_twoEmployee() {
+
+        cleanRewardAndPaymentDB();
+
+        // create employees
+        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", 0.5);
+
+        // create rewards
+        RewardDTO rewardDTO1 = createReward(employeeDTO1.getId(), "HELP", null);
+        RewardDTO rewardDTO2 = createReward(employeeDTO2.getId(), "HELP", null);
+
+        // create tariffs
+        createTariff("HELP", 30.0);
+
+        // invoke calculateRewards()
+        rewardCalculation();
+
+        // check Reward
+        rewardDTO1 = getReward(rewardDTO1.getId());
+        checkReward(rewardDTO1, employeeDTO1, "HELP", "PAID");
+
+        rewardDTO2 = getReward(rewardDTO2.getId());
+        checkReward(rewardDTO2, employeeDTO2, "HELP", "PAID");
+
+        // check payments
+        PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
+        checkPayment(paymentDTO1, employeeDTO1, 45.0);
+
+        PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
+        checkPayment(paymentDTO2, employeeDTO2, 45.0);
+    }
+
+    @Test
+    public void shouldPayJobType_HELP_LESSON_twoEmployee() {
+
+        cleanRewardAndPaymentDB();
+
+        // create employees
+        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", 0.5);
+
+        // create rewards
+        RewardDTO rewardDTO1 = createReward(employeeDTO1.getId(), "HELP", null);
+        RewardDTO rewardDTO2 = createReward(employeeDTO2.getId(), "LESSON", null);
+
+        // create tariffs
+        createTariff("HELP", 30.0);
+        createTariff("LESSON", 30.0);
+
+        // invoke calculateRewards()
+        rewardCalculation();
+
+        // check Reward
+        rewardDTO1 = getReward(rewardDTO1.getId());
+        checkReward(rewardDTO1, employeeDTO1, "HELP", "PAID");
+
+        rewardDTO2 = getReward(rewardDTO2.getId());
+        checkReward(rewardDTO2, employeeDTO2, "LESSON", "PAID");
+
+        // check payments
+        PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
+        checkPayment(paymentDTO1, employeeDTO1, 45.0);
+
+        PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
+        checkPayment(paymentDTO2, employeeDTO2, 45.0);
+    }
+
+    @Test
+    public void shouldPayJobType_HELP_bonusCoef_Zero() {
+
+        cleanRewardAndPaymentDB();
+
+        // create employees
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.0);
+
+        // create rewards
+        RewardDTO rewardDTO = createReward(employeeDTO.getId(), "HELP", null);
+
+        // create tariffs
+        createTariff("HELP", 30.0);
+
+        // invoke calculateRewards()
+        rewardCalculation();
+
+        // check Reward
+        rewardDTO = getReward(rewardDTO.getId());
+        checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
+
+        // check payments
+        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
+        checkPayment(paymentDTO, employeeDTO, 30.0);
+    }
+
+    private void cleanRewardAndPaymentDB(){
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
+    }
+
+    private void checkReward(RewardDTO rewardDTO, EmployeeDTO employeeDTO, String jobType, String status) {
+        assertNotNull(rewardDTO);
+        assertNotNull(rewardDTO.getId());
+        assertEquals(rewardDTO.getEmployeeId(), employeeDTO.getId());
+        assertEquals(rewardDTO.getJobType(), jobType);
+        assertEquals(rewardDTO.getStatus(), status);
+    }
+
+    private void checkPayment(PaymentDTO paymentDTO, EmployeeDTO employeeDTO, Double amount) {
+        assertNotNull(paymentDTO);
+        assertNotNull(paymentDTO.getId());
+        assertEquals(paymentDTO.getEmployeeId(), employeeDTO.getId());
+        assertEquals(paymentDTO.getAmount(), amount, 0.0001);
     }
 
 }
