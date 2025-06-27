@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tariffs")
 @Getter
@@ -24,6 +26,6 @@ public class Tariff {
     private JobType jobType;
 
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
 }

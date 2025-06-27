@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "employees")
 @Getter
@@ -31,6 +33,6 @@ public class Employee {
     private String lastName;
 
     @Column(name = "bonus_coefficient", nullable = false)
-    private Double bonusCoefficient;
+    private BigDecimal bonusCoefficient;
 
 }

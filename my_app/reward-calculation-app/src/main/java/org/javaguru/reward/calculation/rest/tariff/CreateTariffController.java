@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/test/tariff")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -31,7 +33,7 @@ public class CreateTariffController {
 
     private Tariff saveTariffInDB(CreateTariffRequest tariffRequest){
         Tariff tariff = new Tariff();
-        tariff.setAmount(tariffRequest.getAmount());
+        tariff.setAmount(BigDecimal.valueOf(tariffRequest.getAmount()));
         tariff.setJobType(JobType.valueOf(tariffRequest.getJobType()));
         tariffRepository.save(tariff);
         return tariff;

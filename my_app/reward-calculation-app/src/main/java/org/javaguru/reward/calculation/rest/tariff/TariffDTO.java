@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +21,6 @@ public class TariffDTO {
 
     private String jobType;
 
-    private Double amount;
+    private BigDecimal amount;
 
 }

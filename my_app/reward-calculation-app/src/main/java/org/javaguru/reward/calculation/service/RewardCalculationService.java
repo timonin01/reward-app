@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class RewardCalculationService {
             for (Reward reward : rewards) {
                 if (List.of(JobType.SPEECH, JobType.LESSON, JobType.HELP).contains(reward.getJobType())) {
                     Tariff tariff = tariffRepository.findByJobType(reward.getJobType()).get();
-                    double amount = (1 + employee.getBonusCoefficient()) * tariff.getAmount();
+                    BigDecimal amount = (BigDecimal.ONE.add(employee.getBonusCoefficient()).multiply(tariff.getAmount()));
                     rewardPaymentClient.payReward(employee.getId(), amount);
                     log.info("Payment sent to "+ employee.getFirstName()+" "+employee.getLastName()
                             +", ID = " +employee.getId()+" with "+amount);

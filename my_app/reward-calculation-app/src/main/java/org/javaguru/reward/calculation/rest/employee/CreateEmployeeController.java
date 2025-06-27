@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RestController
@@ -33,7 +34,7 @@ public class CreateEmployeeController {
         Employee employee = new Employee();
         employee.setFirstName(employeeRequest.getFirstName());
         employee.setLastName(employeeRequest.getLastName());
-        employee.setBonusCoefficient(employeeRequest.getBonusCoefficient());
+        employee.setBonusCoefficient(BigDecimal.valueOf(employeeRequest.getBonusCoefficient()));
         employeeRepository.save(employee);
         return employee;
     }
