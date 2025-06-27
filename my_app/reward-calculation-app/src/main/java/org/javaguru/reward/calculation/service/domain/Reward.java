@@ -26,7 +26,8 @@ public class Reward {
     @Column(name = "job_type", nullable = false)
     private JobType jobType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "reward_status")
-    private String status;
+    private RewardStatus status;
 
 }

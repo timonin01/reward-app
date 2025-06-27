@@ -3,10 +3,7 @@ package org.javaguru.reward.calculation.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javaguru.reward.calculation.service.domain.Employee;
-import org.javaguru.reward.calculation.service.domain.JobType;
-import org.javaguru.reward.calculation.service.domain.Reward;
-import org.javaguru.reward.calculation.service.domain.Tariff;
+import org.javaguru.reward.calculation.service.domain.*;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -42,15 +40,20 @@ public class RewardCalculationService {
             for (Reward reward : rewards) {
                 if (List.of(JobType.SPEECH, JobType.LESSON, JobType.HELP).contains(reward.getJobType())) {
                     Tariff tariff = tariffRepository.findByJobType(reward.getJobType()).get();
-                    BigDecimal amount = (BigDecimal.ONE.add(employee.getBonusCoefficient()).multiply(tariff.getAmount()));
+                    BigDecimal amount = calculateAmount(employee,tariff);
                     rewardPaymentClient.payReward(employee.getId(), amount);
                     log.info("Payment sent to "+ employee.getFirstName()+" "+employee.getLastName()
                             +", ID = " +employee.getId()+" with "+amount);
-                    reward.setStatus("PAID");
+                    reward.setStatus(RewardStatus.PAID);
                     rewardRepository.save(reward);
                 }
             }
         }
+    }
+
+    private BigDecimal calculateAmount(Employee employee, Tariff tariff){
+        return (BigDecimal.ONE.add(employee.getBonusCoefficient()).multiply(tariff.getAmount()))
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
 }

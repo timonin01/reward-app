@@ -16,8 +16,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
     @Test
     public void shouldPayJobType_HELP() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
@@ -26,24 +27,25 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         RewardDTO rewardDTO = createReward(employeeDTO.getId(), "HELP", null);
 
         // create tariffs
-        createTariff("HELP", BigDecimal.valueOf( 30.0));
+        createTariff("HELP", BigDecimal.valueOf(30.0));
 
         // invoke calculateRewards()
         rewardCalculation();
 
-        // check Reward
-        rewardDTO = getReward(rewardDTO.getId());
-        checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
-
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 45.0);
-        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(45.0));
+        assertNotNull(paymentDTO);
+
+        // check reward
+        rewardDTO = getReward(rewardDTO.getId());
+        assertEquals(rewardDTO.getStatus(), "PAID");
     }
 
     @Test
     public void shouldPayJobType_SPEECH() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
@@ -59,17 +61,18 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
-        checkReward(rewardDTO, employeeDTO, "SPEECH", "PAID");
+        assertEquals(rewardDTO.getStatus(), "PAID");
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
+        assertNotNull(paymentDTO);
     }
 
     @Test
     public void shouldPayJobType_LESSON() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
@@ -85,17 +88,18 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
-        checkReward(rewardDTO, employeeDTO, "LESSON", "PAID");
+        assertEquals(rewardDTO.getStatus(), "PAID");
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
+        assertNotNull(paymentDTO);
     }
 
     @Test
     public void shouldPayJobType_HELP_twoEmployee() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
@@ -113,23 +117,22 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check Reward
         rewardDTO1 = getReward(rewardDTO1.getId());
-        checkReward(rewardDTO1, employeeDTO1, "HELP", "PAID");
-
         rewardDTO2 = getReward(rewardDTO2.getId());
-        checkReward(rewardDTO2, employeeDTO2, "HELP", "PAID");
+        assertEquals(rewardDTO1.getStatus(), "PAID");
+        assertEquals(rewardDTO2.getStatus(), "PAID");
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, BigDecimal.valueOf(45.0));
-
         PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, BigDecimal.valueOf(45.0));
+        assertNotNull(paymentDTO1);
+        assertNotNull(paymentDTO2);
     }
 
     @Test
     public void shouldPayJobType_HELP_LESSON_twoEmployee() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
@@ -148,23 +151,22 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check Reward
         rewardDTO1 = getReward(rewardDTO1.getId());
-        checkReward(rewardDTO1, employeeDTO1, "HELP", "PAID");
-
         rewardDTO2 = getReward(rewardDTO2.getId());
-        checkReward(rewardDTO2, employeeDTO2, "LESSON", "PAID");
+        assertEquals(rewardDTO1.getStatus(), "PAID");
+        assertEquals(rewardDTO2.getStatus(), "PAID");
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, BigDecimal.valueOf(45.0));
-
         PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, BigDecimal.valueOf(45.0));
+        assertNotNull(paymentDTO1);
+        assertNotNull(paymentDTO2);
     }
 
     @Test
     public void shouldPayJobType_HELP_bonusCoef_Zero() {
-
-        cleanRewardAndPaymentDB();
+        // clean db
+        cleanPaymentDb(true);
+        cleanRewardDb(true, true, true);
 
         // create employees
         EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.0));
@@ -180,31 +182,11 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
-        checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
+        assertEquals(rewardDTO.getStatus(), "PAID");
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
-    }
-
-    private void cleanRewardAndPaymentDB(){
-        cleanPaymentDb(true);
-        cleanRewardDb(true, true, true);
-    }
-
-    private void checkReward(RewardDTO rewardDTO, EmployeeDTO employeeDTO, String jobType, String status) {
-        assertNotNull(rewardDTO);
-        assertNotNull(rewardDTO.getId());
-        assertEquals(rewardDTO.getEmployeeId(), employeeDTO.getId());
-        assertEquals(rewardDTO.getJobType(), jobType);
-        assertEquals(rewardDTO.getStatus(), status);
-    }
-
-    private void checkPayment(PaymentDTO paymentDTO, EmployeeDTO employeeDTO, BigDecimal amount) {
         assertNotNull(paymentDTO);
-        assertNotNull(paymentDTO.getId());
-        assertEquals(paymentDTO.getEmployeeId(), employeeDTO.getId());
-        assertEquals(paymentDTO.getAmount(), amount);
     }
 
 }

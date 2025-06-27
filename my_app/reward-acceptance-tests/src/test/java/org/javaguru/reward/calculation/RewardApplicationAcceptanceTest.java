@@ -67,10 +67,6 @@ public abstract class RewardApplicationAcceptanceTest {
         return createRewardAction.createReward(employeeId, jobType, status);
     }
 
-    public RewardDTO getReward(Long rewardId) {
-        return getRewardAction.getReward(rewardId);
-    }
-
     public TariffDTO createTariff(String jobType, BigDecimal amount) {
         return createTariffAction.createTariff(jobType, amount);
     }
@@ -81,5 +77,9 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public PaymentDTO getPayment(Long employeeId, Double amount) {
         return searchPaymentAction.getPayment(employeeId, amount);
+    }
+
+    public RewardDTO getReward(Long rewardId) {
+        return getRewardAction.getReward(rewardId);
     }
 }
