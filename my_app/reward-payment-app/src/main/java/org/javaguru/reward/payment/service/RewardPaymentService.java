@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardPaymentService {
@@ -15,7 +17,7 @@ public class RewardPaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public void pay(Long employeeId, Double amount) {
+    public void pay(Long employeeId, BigDecimal amount) {
         Payment payment = new Payment();
         payment.setEmployeeId(employeeId);
         payment.setAmount(amount);

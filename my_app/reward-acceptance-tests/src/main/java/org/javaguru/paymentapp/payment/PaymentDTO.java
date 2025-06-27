@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +17,6 @@ public class PaymentDTO {
 
     private Long employeeId;
 
-    private Double amount;
+    private BigDecimal amount;
 
 }

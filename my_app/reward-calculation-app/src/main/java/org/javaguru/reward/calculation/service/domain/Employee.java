@@ -32,7 +32,7 @@ public class Employee {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "bonus_coefficient", nullable = false)
+    @Column(name = "bonus_coefficient", nullable = false,precision = 10, scale = 2)
     private BigDecimal bonusCoefficient;
 
 }

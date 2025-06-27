@@ -16,6 +16,8 @@ import org.javaguru.rewardapp.reward.RewardDTO;
 import org.javaguru.rewardapp.tariff.TariffDTO;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.math.BigDecimal;
+
 public abstract class RewardApplicationAcceptanceTest {
 
     private CleanRewardDatabaseAction cleanRewardDatabaseAction;
@@ -55,7 +57,7 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public EmployeeDTO createEmployee(String firstName,
                                       String lastName,
-                                      Double bonusCoefficient) {
+                                      BigDecimal bonusCoefficient) {
         return createEmployeeAction.createEmployee(firstName, lastName, bonusCoefficient);
     }
 
@@ -69,7 +71,7 @@ public abstract class RewardApplicationAcceptanceTest {
         return getRewardAction.getReward(rewardId);
     }
 
-    public TariffDTO createTariff(String jobType, Double amount) {
+    public TariffDTO createTariff(String jobType, BigDecimal amount) {
         return createTariffAction.createTariff(jobType, amount);
     }
 

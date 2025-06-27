@@ -34,7 +34,7 @@ public class CreateEmployeeController {
         Employee employee = new Employee();
         employee.setFirstName(employeeRequest.getFirstName());
         employee.setLastName(employeeRequest.getLastName());
-        employee.setBonusCoefficient(BigDecimal.valueOf(employeeRequest.getBonusCoefficient()));
+        employee.setBonusCoefficient(employeeRequest.getBonusCoefficient());
         employeeRepository.save(employee);
         return employee;
     }

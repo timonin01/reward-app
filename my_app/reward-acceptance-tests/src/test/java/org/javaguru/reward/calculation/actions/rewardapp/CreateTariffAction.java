@@ -8,12 +8,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 public class CreateTariffAction {
 
     private static String url = "http://localhost:8080/api/test/tariff/";
 
     public TariffDTO createTariff(String jobType,
-                                  Double amount) {
+                                  BigDecimal amount) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

@@ -33,7 +33,7 @@ public class CreateTariffController {
 
     private Tariff saveTariffInDB(CreateTariffRequest tariffRequest){
         Tariff tariff = new Tariff();
-        tariff.setAmount(BigDecimal.valueOf(tariffRequest.getAmount()));
+        tariff.setAmount(tariffRequest.getAmount());
         tariff.setJobType(JobType.valueOf(tariffRequest.getJobType()));
         tariffRepository.save(tariff);
         return tariff;

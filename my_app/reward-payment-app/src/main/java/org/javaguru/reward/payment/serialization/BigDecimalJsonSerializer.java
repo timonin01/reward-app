@@ -1,4 +1,4 @@
-package org.javaguru.reward.calculation.service.restclient;
+package org.javaguru.reward.payment.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

@@ -6,6 +6,8 @@ import org.javaguru.rewardapp.reward.RewardDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -18,13 +20,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
 
         // create rewards
         RewardDTO rewardDTO = createReward(employeeDTO.getId(), "HELP", null);
 
         // create tariffs
-        createTariff("HELP", 30.0);
+        createTariff("HELP", BigDecimal.valueOf( 30.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -35,7 +37,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 45.0);
-        checkPayment(paymentDTO, employeeDTO, 45.0);
+        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(45.0));
     }
 
     @Test
@@ -44,13 +46,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
 
         // create rewards
         RewardDTO rewardDTO = createReward(employeeDTO.getId(), "SPEECH", null);
 
         // create tariffs
-        createTariff("SPEECH", 20.0);
+        createTariff("SPEECH", BigDecimal.valueOf(20.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -61,7 +63,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, 30.0);
+        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
     }
 
     @Test
@@ -70,13 +72,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.5);
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
 
         // create rewards
         RewardDTO rewardDTO = createReward(employeeDTO.getId(), "LESSON", null);
 
         // create tariffs
-        createTariff("LESSON", 20.0);
+        createTariff("LESSON", BigDecimal.valueOf(20.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -87,7 +89,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, 30.0);
+        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
     }
 
     @Test
@@ -96,15 +98,15 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", 0.5);
-        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", 0.5);
+        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
+        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", BigDecimal.valueOf(0.5));
 
         // create rewards
         RewardDTO rewardDTO1 = createReward(employeeDTO1.getId(), "HELP", null);
         RewardDTO rewardDTO2 = createReward(employeeDTO2.getId(), "HELP", null);
 
         // create tariffs
-        createTariff("HELP", 30.0);
+        createTariff("HELP", BigDecimal.valueOf(30.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -118,10 +120,10 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, 45.0);
+        checkPayment(paymentDTO1, employeeDTO1, BigDecimal.valueOf(45.0));
 
         PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, 45.0);
+        checkPayment(paymentDTO2, employeeDTO2, BigDecimal.valueOf(45.0));
     }
 
     @Test
@@ -130,16 +132,16 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", 0.5);
-        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", 0.5);
+        EmployeeDTO employeeDTO1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
+        EmployeeDTO employeeDTO2 = createEmployee("Mister", "Y", BigDecimal.valueOf(0.5));
 
         // create rewards
         RewardDTO rewardDTO1 = createReward(employeeDTO1.getId(), "HELP", null);
         RewardDTO rewardDTO2 = createReward(employeeDTO2.getId(), "LESSON", null);
 
         // create tariffs
-        createTariff("HELP", 30.0);
-        createTariff("LESSON", 30.0);
+        createTariff("HELP", BigDecimal.valueOf(30.0));
+        createTariff("LESSON", BigDecimal.valueOf(30.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -153,10 +155,10 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, 45.0);
+        checkPayment(paymentDTO1, employeeDTO1, BigDecimal.valueOf(45.0));
 
         PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, 45.0);
+        checkPayment(paymentDTO2, employeeDTO2, BigDecimal.valueOf(45.0));
     }
 
     @Test
@@ -165,13 +167,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         cleanRewardAndPaymentDB();
 
         // create employees
-        EmployeeDTO employeeDTO = createEmployee("Mister", "X", 0.0);
+        EmployeeDTO employeeDTO = createEmployee("Mister", "X", BigDecimal.valueOf(0.0));
 
         // create rewards
         RewardDTO rewardDTO = createReward(employeeDTO.getId(), "HELP", null);
 
         // create tariffs
-        createTariff("HELP", 30.0);
+        createTariff("HELP", BigDecimal.valueOf(30.0));
 
         // invoke calculateRewards()
         rewardCalculation();
@@ -182,7 +184,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, 30.0);
+        checkPayment(paymentDTO, employeeDTO, BigDecimal.valueOf(30.0));
     }
 
     private void cleanRewardAndPaymentDB(){
@@ -198,11 +200,11 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         assertEquals(rewardDTO.getStatus(), status);
     }
 
-    private void checkPayment(PaymentDTO paymentDTO, EmployeeDTO employeeDTO, Double amount) {
+    private void checkPayment(PaymentDTO paymentDTO, EmployeeDTO employeeDTO, BigDecimal amount) {
         assertNotNull(paymentDTO);
         assertNotNull(paymentDTO.getId());
         assertEquals(paymentDTO.getEmployeeId(), employeeDTO.getId());
-        assertEquals(paymentDTO.getAmount(), amount, 0.0001);
+        assertEquals(paymentDTO.getAmount(), amount);
     }
 
 }

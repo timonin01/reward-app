@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +28,7 @@ public class SearchPaymentController {
     }
 
     private PaymentDTO searchPaymentInDB(Long employeeId,Double amount){
-        Optional<Payment> payment = paymentRepository.findByEmployeeIdAndAmount(employeeId,amount);
+        Optional<Payment> payment = paymentRepository.findByEmployeeIdAndAmount(employeeId, BigDecimal.valueOf(amount));
         if(payment.isPresent()){
             return createPaymentDTO(payment.get());
         }

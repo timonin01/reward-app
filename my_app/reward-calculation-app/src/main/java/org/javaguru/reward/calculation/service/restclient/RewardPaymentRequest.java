@@ -1,10 +1,11 @@
 package org.javaguru.reward.calculation.service.restclient;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.javaguru.reward.calculation.deserialization.BigDecimalJsonDeserializer;
 
 import java.math.BigDecimal;
 
@@ -16,7 +17,7 @@ public class RewardPaymentRequest {
 
     private Long employeeId;
 
-    @JsonSerialize(using = BigDecimalJsonSerializer.class)
+    @JsonDeserialize(using = BigDecimalJsonDeserializer.class)
     private BigDecimal amount;
 
 }

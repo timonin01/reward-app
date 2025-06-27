@@ -25,7 +25,7 @@ public class Tariff {
     @Column(name = "job_type", nullable = false)
     private JobType jobType;
 
-    @Column(name = "amount")
+    @Column(name = "amount",precision = 10, scale = 2)
     private BigDecimal amount;
 
 }

@@ -8,13 +8,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 public class CreateEmployeeAction {
 
     private static String url = "http://localhost:8080/api/test/employee/";
 
     public EmployeeDTO createEmployee(String firstName,
                                       String lastName,
-                                      Double bonusCoefficient) {
+                                      BigDecimal bonusCoefficient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
