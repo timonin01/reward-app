@@ -2,6 +2,8 @@ package org.javaguru.reward.calculation.service.domain;
 
 public enum RewardStatus {
 
-    PAID
+    PAID,
+    NOT_PAID,
+    NEW
 
 }

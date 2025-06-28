@@ -27,7 +27,7 @@ public class Reward {
     private JobType jobType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "reward_status")
+    @Column(name = "reward_status",nullable = false)
     private RewardStatus status;
 
 }

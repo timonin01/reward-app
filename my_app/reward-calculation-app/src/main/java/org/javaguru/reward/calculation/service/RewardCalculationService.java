@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Сервис тарификации вознаграждений сотрудникам за дополнительную работу.
@@ -33,19 +35,29 @@ public class RewardCalculationService {
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
 
+    private static final Set<JobType> jobTypesList = Set.of(JobType.SPEECH, JobType.LESSON, JobType.HELP);
+
     @Transactional
     public void calculateRewards(List<Employee> employees) {
         for (Employee employee : employees) {
-            List<Reward> rewards = rewardRepository.findByEmployeeId(employee.getId());
+            List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatus(employee.getId(),RewardStatus.NEW);
             for (Reward reward : rewards) {
-                if (List.of(JobType.SPEECH, JobType.LESSON, JobType.HELP).contains(reward.getJobType())) {
-                    Tariff tariff = tariffRepository.findByJobType(reward.getJobType()).get();
-                    BigDecimal amount = calculateAmount(employee,tariff);
-                    rewardPaymentClient.payReward(employee.getId(), amount);
-                    log.info("Payment sent to "+ employee.getFirstName()+" "+employee.getLastName()
-                            +", ID = " +employee.getId()+" with "+amount);
-                    reward.setStatus(RewardStatus.PAID);
-                    rewardRepository.save(reward);
+                if (jobTypesList.contains(reward.getJobType())) {
+                    Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
+                    if(tariff.isPresent()) {
+                        BigDecimal amount = calculateAmount(employee, tariff.get());
+                        rewardPaymentClient.payReward(employee.getId(), amount);
+                        log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
+                                + ", ID = " + employee.getId() + " with " + amount);
+                        reward.setStatus(RewardStatus.PAID);
+                        rewardRepository.save(reward);
+                    }
+                    else {
+                        log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
+                                + ", ID = " + employee.getId() + ",because Tariff does not exist");
+                        reward.setStatus(RewardStatus.NOT_PAID);
+                        rewardRepository.save(reward);
+                    }
                 }
             }
         }
