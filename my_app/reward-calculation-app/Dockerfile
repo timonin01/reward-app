@@ -4,13 +4,13 @@ FROM eclipse-temurin:21
 # RUN apk add --no-cache bash
 
 # Set the working directory inside the container
-WORKDIR /app
+#WORKDIR /app
 
-COPY wait-for-it.sh /app/wait-for-it.sh
-RUN chmod +x /app/wait-for-it.sh
+COPY wait-for-it.sh wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
 COPY build/libs/reward-calculation-app-1.0.2.jar /reward-calculation-app.jar
 
-CMD ["/app/wait-for-it.sh", "reward-calculation-db:3306", "--timeout=30", "--", "java", "-jar", "$APP_JAR"]
+CMD ["./wait-for-it.sh", "reward-calculation-db:3306", "--timeout=30", "--" , "java", "-Dspring.profiles.active=mysql-container", "-jar", "reward-calculation-app.jar"]
 
 EXPOSE 8080

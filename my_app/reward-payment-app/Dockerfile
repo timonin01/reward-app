@@ -13,4 +13,4 @@ COPY build/libs/reward-payment-app-1.0.2.jar /reward-payment-app.jar
 
 CMD ["./wait-for-it.sh", "reward-payment-db:3306", "--timeout=30", "--", "java", "-Dspring.profiles.active=mysql-container", "-jar", "reward-payment-app.jar"]
 
-EXPOSE 8080
+EXPOSE 8090

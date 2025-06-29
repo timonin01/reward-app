@@ -27,7 +27,7 @@ services:
   reward-calculation-app:
     networks: [tim-network]
     container_name: reward-calculation-app
-    image: reward-calculation-app:1.0.1
+    image: reward-calculation-app:1.0.2
     ports:
       - "8080:8080"
     volumes:
@@ -39,7 +39,7 @@ services:
   reward-payment-app:
     networks: [tim-network]
     container_name: reward-payment-app
-    image: reward-payment-app:1.0.1
+    image: reward-payment-app:1.0.2
     ports:
       - "8090:8090"
     volumes:
