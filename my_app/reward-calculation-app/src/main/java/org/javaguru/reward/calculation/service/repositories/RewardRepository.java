@@ -13,6 +13,6 @@ public interface RewardRepository extends JpaRepository<Reward, Long> {
 
     Optional<Reward> findById(Long id);
 
-    List<Reward> findByEmployeeIdAndStatus(Long employeeId, RewardStatus status);
+    List<Reward> findByEmployeeIdAndStatus(Long employeeId, RewardStatus rewardStatus);
 
 }

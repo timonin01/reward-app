@@ -21,6 +21,7 @@ public class BigDecimalJsonDeserializer extends JsonDeserializer<BigDecimal> {
             return null; // Default value if input is empty
         }
 
+        value = value.replace(",", ".");
         try {
             return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP); // Ensure 2 decimal places
         } catch (NumberFormatException e) {

@@ -18,6 +18,6 @@ public class RewardDTO {
 
     private String jobType;
 
-    private String status;
+    private String rewardStatus;
 
 }

@@ -1,6 +1,7 @@
 package org.javaguru.reward.calculation.service;
 
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.javaguru.reward.calculation.service.domain.*;
@@ -38,7 +39,7 @@ public class RewardCalculationService {
     private static final Set<JobType> jobTypesList = Set.of(JobType.SPEECH, JobType.LESSON, JobType.HELP);
 
     @Transactional
-    public void calculateRewards(List<Employee> employees) {
+    public void calculateRewards(@NonNull List<Employee> employees) {
         for (Employee employee : employees) {
             List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatus(employee.getId(),RewardStatus.NEW);
             for (Reward reward : rewards) {
@@ -49,13 +50,13 @@ public class RewardCalculationService {
                         rewardPaymentClient.payReward(employee.getId(), amount);
                         log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
                                 + ", ID = " + employee.getId() + " with " + amount);
-                        reward.setStatus(RewardStatus.PAID);
+                        reward.setRewardStatus(RewardStatus.PAID);
                         rewardRepository.save(reward);
                     }
                     else {
                         log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
                                 + ", ID = " + employee.getId() + ",because Tariff does not exist");
-                        reward.setStatus(RewardStatus.NOT_PAID);
+                        reward.setRewardStatus(RewardStatus.NOT_PAID);
                         rewardRepository.save(reward);
                     }
                 }

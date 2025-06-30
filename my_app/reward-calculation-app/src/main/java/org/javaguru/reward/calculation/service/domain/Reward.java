@@ -28,6 +28,6 @@ public class Reward {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "reward_status",nullable = false)
-    private RewardStatus status;
+    private RewardStatus rewardStatus;
 
 }

@@ -38,7 +38,7 @@ public class GetRewardController {
         rewardDTO.setId(reward.getId());
         rewardDTO.setEmployeeId(reward.getEmployeeId());
         rewardDTO.setJobType(reward.getJobType().name());
-        rewardDTO.setStatus(reward.getStatus() != null ? reward.getStatus().name() : null);
+        rewardDTO.setRewardStatus(reward.getRewardStatus() != null ? reward.getRewardStatus().name() : null);
         return rewardDTO;
     }
 
