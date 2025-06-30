@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.javaguru.reward.calculation.config.JobTypesConfig;
 import org.javaguru.reward.calculation.service.domain.*;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
@@ -32,33 +33,31 @@ import java.util.Set;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardCalculationService {
 
+    private final JobTypesConfig jobTypesConfig;
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
 
-    private static final Set<JobType> jobTypesList = Set.of(JobType.SPEECH, JobType.LESSON, JobType.HELP);
-
     @Transactional
     public void calculateRewards(@NonNull List<Employee> employees) {
         for (Employee employee : employees) {
-            List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatus(employee.getId(),RewardStatus.NEW);
+            List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatusAndJobTypeIn(
+                    employee.getId(), RewardStatus.NEW, jobTypesConfig.getJobTypes());
             for (Reward reward : rewards) {
-                if (jobTypesList.contains(reward.getJobType())) {
-                    Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
-                    if(tariff.isPresent()) {
-                        BigDecimal amount = calculateAmount(employee, tariff.get());
-                        rewardPaymentClient.payReward(employee.getId(), amount);
-                        log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
-                                + ", ID = " + employee.getId() + " with " + amount);
-                        reward.setRewardStatus(RewardStatus.PAID);
-                        rewardRepository.save(reward);
-                    }
-                    else {
-                        log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
-                                + ", ID = " + employee.getId() + ",because Tariff does not exist");
-                        reward.setRewardStatus(RewardStatus.NOT_PAID);
-                        rewardRepository.save(reward);
-                    }
+                Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
+                if(tariff.isPresent()) {
+                    BigDecimal amount = calculateAmount(employee, tariff.get());
+                    rewardPaymentClient.payReward(employee.getId(), amount);
+                    log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
+                            + ", ID = " + employee.getId() + " with " + amount);
+                    reward.setRewardStatus(RewardStatus.PAID);
+                    rewardRepository.save(reward);
+                }
+                else {
+                    log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
+                            + ", ID = " + employee.getId() + ",because Tariff does not exist");
+                    reward.setRewardStatus(RewardStatus.NOT_PAID);
+                    rewardRepository.save(reward);
                 }
             }
         }

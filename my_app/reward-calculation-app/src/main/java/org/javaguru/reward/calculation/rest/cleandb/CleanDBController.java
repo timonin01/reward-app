@@ -2,9 +2,11 @@ package org.javaguru.reward.calculation.rest.cleandb;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.javaguru.reward.calculation.config.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.repositories.EmployeeRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,7 @@ public class CleanDBController {
         consumes = "application/json",
         produces = "application/json")
     @Transactional
+    @CacheEvict(cacheNames = LocalCacheConfig.TARIFF_CACHE, allEntries = true)
     public CleanDBResponse cleanDB(@RequestBody CleanDBRequest request){
         CleanDBResponse response = new CleanDBResponse();
 
