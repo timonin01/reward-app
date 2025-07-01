@@ -34,7 +34,7 @@ import java.util.Set;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardCalculationService {
 
-    private final JobTypesRepository jobTypesRepository;
+    private final JobTypesToPayService jobTypesToPayService;
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
@@ -43,7 +43,7 @@ public class RewardCalculationService {
     public void calculateRewards(@NonNull List<Employee> employees) {
         for (Employee employee : employees) {
             List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatusAndJobTypeIn(
-                    employee.getId(), RewardStatus.NEW, jobTypesRepository.findAllDistinctJobTypes());
+                    employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
             for (Reward reward : rewards) {
                 Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
                 if(tariff.isPresent()) {
