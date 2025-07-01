@@ -4,14 +4,10 @@ import org.javaguru.paymentapp.cleandb.CleanPaymentDbResponse;
 import org.javaguru.paymentapp.payment.PaymentDTO;
 import org.javaguru.reward.calculation.actions.paymentapp.CleanPaymentDatabaseAction;
 import org.javaguru.reward.calculation.actions.paymentapp.SearchPaymentAction;
-import org.javaguru.reward.calculation.actions.rewardapp.CleanRewardDatabaseAction;
-import org.javaguru.reward.calculation.actions.rewardapp.CreateEmployeeAction;
-import org.javaguru.reward.calculation.actions.rewardapp.CreateRewardAction;
-import org.javaguru.reward.calculation.actions.rewardapp.CreateTariffAction;
-import org.javaguru.reward.calculation.actions.rewardapp.GetRewardAction;
-import org.javaguru.reward.calculation.actions.rewardapp.RewardCalculationAction;
+import org.javaguru.reward.calculation.actions.rewardapp.*;
 import org.javaguru.rewardapp.cleandb.CleanRewardDbResponse;
 import org.javaguru.rewardapp.employee.EmployeeDTO;
+import org.javaguru.rewardapp.jobtypes.JobTypesDTO;
 import org.javaguru.rewardapp.reward.RewardDTO;
 import org.javaguru.rewardapp.tariff.TariffDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +24,7 @@ public abstract class RewardApplicationAcceptanceTest {
     private CreateTariffAction createTariffAction;
     private RewardCalculationAction rewardCalculationAction;
     private GetRewardAction getRewardAction;
+    private CreateJobTypesAction createJobTypesAction;
 
     private SearchPaymentAction searchPaymentAction;
 
@@ -41,6 +38,7 @@ public abstract class RewardApplicationAcceptanceTest {
         createTariffAction = new CreateTariffAction();
         rewardCalculationAction = new RewardCalculationAction();
         getRewardAction = new GetRewardAction();
+        createJobTypesAction = new CreateJobTypesAction();
 
         searchPaymentAction = new SearchPaymentAction();
     }
@@ -51,8 +49,9 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public CleanRewardDbResponse cleanRewardDb(boolean cleanEmployee,
                                                boolean cleanReward,
-                                               boolean cleanTariff) {
-        return cleanRewardDatabaseAction.cleanRewardDb(cleanEmployee, cleanReward, cleanTariff);
+                                               boolean cleanTariff,
+                                               boolean cleanJobTypes) {
+        return cleanRewardDatabaseAction.cleanRewardDb(cleanEmployee, cleanReward, cleanTariff, cleanJobTypes);
     }
 
     public EmployeeDTO createEmployee(String firstName,
@@ -65,6 +64,10 @@ public abstract class RewardApplicationAcceptanceTest {
                                   String jobType,
                                   String status) {
         return createRewardAction.createReward(employeeId, jobType, status);
+    }
+
+    public JobTypesDTO createAllowedToPayJobType(String jobType) {
+        return createJobTypesAction.createAllowedToPayJobType(jobType);
     }
 
     public TariffDTO createTariff(String jobType, BigDecimal amount) {

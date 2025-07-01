@@ -14,5 +14,6 @@ public class CleanRewardDbRequest {
     private boolean cleanEmployee;
     private boolean cleanReward;
     private boolean cleanTariff;
+    private boolean cleanJobTypes;
 
 }

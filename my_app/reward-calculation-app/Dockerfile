@@ -11,6 +11,6 @@ RUN chmod +x /wait-for-it.sh
 
 COPY build/libs/reward-calculation-app-1.0.2.jar /reward-calculation-app.jar
 
-CMD ["./wait-for-it.sh", "reward-calculation-db:3306", "--timeout=30", "--" , "java", "-Dspring.profiles.active=mysql-container", "-jar", "reward-calculation-app.jar"]
+CMD ["./wait-for-it.sh", "reward-calculation-db:3306", "--timeout=30", "--", "java", "-Dspring.profiles.active=mysql-container", "-jar", "/reward-calculation-app.jar"]
 
 EXPOSE 8080

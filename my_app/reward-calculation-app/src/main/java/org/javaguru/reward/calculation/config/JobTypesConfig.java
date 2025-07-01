@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @ConfigurationProperties(prefix = "job")
 public class JobTypesConfig {
 
-    private Set<JobType> jobTypes;
+    private List<JobType> jobTypes;
 
-    public Set<JobType> getJobTypes() {
+    public List<JobType> getJobTypes() {
         return jobTypes;
     }
 
@@ -23,7 +23,7 @@ public class JobTypesConfig {
         this.jobTypes =  Arrays.stream(jobTypes.split(","))
                 .map(String::trim) // Remove extra spaces
                 .map(JobType::valueOf) // Convert string to enum
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
 }

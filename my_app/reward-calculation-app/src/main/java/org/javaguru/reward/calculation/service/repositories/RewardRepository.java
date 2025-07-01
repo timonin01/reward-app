@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface RewardRepository extends JpaRepository<Reward, Long> {
@@ -17,6 +16,6 @@ public interface RewardRepository extends JpaRepository<Reward, Long> {
 
     List<Reward> findByEmployeeIdAndStatusAndJobTypeIn(Long employeeId,
                                                        RewardStatus status,
-                                                       Set<JobType> jobTypes);
+                                                       List<JobType> jobTypes);
 
 }

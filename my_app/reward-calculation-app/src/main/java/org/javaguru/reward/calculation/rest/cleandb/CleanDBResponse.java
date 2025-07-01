@@ -14,5 +14,6 @@ public class CleanDBResponse {
     private boolean employeeDeleted;
     private boolean rewardDeleted;
     private boolean tariffDeleted;
+    private boolean jobTypesDeleted;
 
 }

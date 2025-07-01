@@ -3,10 +3,13 @@ package org.javaguru.reward.calculation.config;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @EnableCaching
@@ -14,13 +17,32 @@ import java.util.concurrent.TimeUnit;
 public class LocalCacheConfig {
 
     public static final String TARIFF_CACHE = "tariffCache";
+    public static final String JOBTYPES_CACHE = "jobTypesCache";
 
     @Bean
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager(LocalCacheConfig.TARIFF_CACHE); // Имя кэша
-        cacheManager.setCaffeine(Caffeine.newBuilder()
-                .expireAfterWrite(1, TimeUnit.HOURS) // TTL = 1 час
-                .maximumSize(10));                 // Максимум 10 записей
+    public Caffeine<Object, Object> tariffCacheConfig() {
+        return Caffeine.newBuilder()
+                .expireAfterWrite(1, TimeUnit.HOURS) // TTL of 1 hour
+                .maximumSize(10);
+    }
+
+    @Bean
+    public Caffeine<Object, Object> jobTypesCacheConfig() {
+        return Caffeine.newBuilder()
+                .expireAfterWrite(1, TimeUnit.HOURS); // TTL of 1 hour
+    }
+
+    @Bean
+    public CacheManager cacheManager(Caffeine<Object, Object> tariffCacheConfig,
+                                     Caffeine<Object, Object> jobTypesCacheConfig) {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+
+        // Define caches with names and configurations
+        cacheManager.setCaches(Arrays.asList(
+                new CaffeineCache(TARIFF_CACHE, tariffCacheConfig.build()),
+                new CaffeineCache(JOBTYPES_CACHE, jobTypesCacheConfig.build())
+        ));
+
         return cacheManager;
     }
 

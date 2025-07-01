@@ -13,11 +13,13 @@ public class CleanRewardDatabaseAction {
 
     public CleanRewardDbResponse cleanRewardDb(boolean cleanEmployee,
                                                boolean cleanReward,
-                                               boolean cleanTariff) {
+                                               boolean cleanTariff,
+                                               boolean cleanJobTypes) {
         CleanRewardDbRequest request = new CleanRewardDbRequest();
         request.setCleanEmployee(cleanEmployee);
         request.setCleanReward(cleanReward);
         request.setCleanTariff(cleanTariff);
+        request.setCleanJobTypes(cleanJobTypes);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

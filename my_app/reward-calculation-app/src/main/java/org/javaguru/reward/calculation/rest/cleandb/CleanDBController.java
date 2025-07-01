@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.reward.calculation.config.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.repositories.EmployeeRepository;
+import org.javaguru.reward.calculation.service.repositories.JobTypesRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,6 +22,7 @@ public class CleanDBController {
     private final EmployeeRepository employeeRepository;
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
+    private final JobTypesRepository jobTypesRepository;
 
     @PostMapping(path = "/",
         consumes = "application/json",
@@ -29,6 +31,11 @@ public class CleanDBController {
     @CacheEvict(cacheNames = LocalCacheConfig.TARIFF_CACHE, allEntries = true)
     public CleanDBResponse cleanDB(@RequestBody CleanDBRequest request){
         CleanDBResponse response = new CleanDBResponse();
+
+        if(request.isCleanJobTypes()){
+            jobTypesRepository.deleteAll();
+            response.setJobTypesDeleted(true);
+        }
 
         if (request.isCleanEmployee()) {
             rewardRepository.deleteAll();

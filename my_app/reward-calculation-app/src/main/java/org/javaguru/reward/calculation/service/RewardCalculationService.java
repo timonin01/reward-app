@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.javaguru.reward.calculation.config.JobTypesConfig;
 import org.javaguru.reward.calculation.service.domain.*;
+import org.javaguru.reward.calculation.service.repositories.JobTypesRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
@@ -33,7 +34,7 @@ import java.util.Set;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardCalculationService {
 
-    private final JobTypesConfig jobTypesConfig;
+    private final JobTypesRepository jobTypesRepository;
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
@@ -42,7 +43,7 @@ public class RewardCalculationService {
     public void calculateRewards(@NonNull List<Employee> employees) {
         for (Employee employee : employees) {
             List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatusAndJobTypeIn(
-                    employee.getId(), RewardStatus.NEW, jobTypesConfig.getJobTypes());
+                    employee.getId(), RewardStatus.NEW, jobTypesRepository.findAllDistinctJobTypes());
             for (Reward reward : rewards) {
                 Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
                 if(tariff.isPresent()) {
