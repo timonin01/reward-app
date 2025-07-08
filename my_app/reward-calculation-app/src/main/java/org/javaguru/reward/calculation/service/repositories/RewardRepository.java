@@ -14,7 +14,7 @@ public interface RewardRepository extends JpaRepository<Reward, Long> {
 
     Optional<Reward> findById(Long id);
 
-    List<Reward> findByEmployeeIdAndStatusAndJobTypeIn(Long employeeId,
+    List<Reward> findByEmployeeIdAndRewardStatusAndJobTypeIn(Long employeeId,
                                                        RewardStatus status,
                                                        List<JobType> jobTypes);
 

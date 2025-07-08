@@ -2,6 +2,7 @@ package org.javaguru.reward.calculation.rest.reward;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.domain.RewardStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/test/reward")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -31,18 +33,21 @@ public class CreateRewardController {
     private Reward saveRewardInDb(CreateRewardRequest request){
         Reward reward = new Reward();
         reward.setEmployeeId(request.getEmployeeId());
-        reward.setRewardStatus(request.getRewardStatus() != null ? RewardStatus.valueOf(request.getRewardStatus()) : null);
+        reward.setRewardStatus(request.getRewardStatus() != null
+                ? RewardStatus.valueOf(request.getRewardStatus())
+                : RewardStatus.NEW);
         reward.setJobType(JobType.valueOf(request.getJobType()));
-        rewardRepository.save(reward);
-        return reward;
+        log.info("Saving reward with status: {}", reward.getRewardStatus());
+        return rewardRepository.save(reward);
     }
 
     private RewardDTO createRewardDto(Reward reward){
         RewardDTO dto = new RewardDTO();
         dto.setId(reward.getId());
         dto.setEmployeeId(reward.getEmployeeId());
-        dto.setRewardStatus(reward.getRewardStatus() != null ? reward.getRewardStatus().name() : null);
+        dto.setRewardStatus(reward.getRewardStatus().name());
         dto.setJobType(reward.getJobType().name());
+        log.info("Created RewardDTO with status: {}", dto.getRewardStatus());
         return dto;
     }
 

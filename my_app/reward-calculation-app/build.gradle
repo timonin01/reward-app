@@ -35,6 +35,12 @@ dependencies {
 	implementation('com.h2database:h2:2.2.224')
 	implementation('com.github.ben-manes.caffeine:caffeine:3.1.6')
 
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	// Для работы с JSON в Redis
+	implementation("com.fasterxml.jackson.core:jackson-databind")
+	// Для распределенных блокировок (опционально)
+	implementation("org.redisson:redisson-spring-boot-starter:3.23.2")
+
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-cache:$springBootVersion")

@@ -18,7 +18,7 @@ public interface JobTypesRepository extends JpaRepository<JobTypes,Long> {
     Optional<JobTypes> findByJobType(JobType jobType);
 
     @Cacheable(cacheNames = LocalCacheConfig.JOBTYPES_CACHE, key = "#p0")
-    @Query("SELECT DISTINCT j.jobType FROM JobTypes j")
+    @Query("SELECT DISTINCT j.jobType FROM job_types j")
     List<JobType> findAllDistinctJobTypes();
 
 }

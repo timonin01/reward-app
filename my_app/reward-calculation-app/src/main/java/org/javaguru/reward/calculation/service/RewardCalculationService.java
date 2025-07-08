@@ -42,7 +42,7 @@ public class RewardCalculationService {
     @Transactional
     public void calculateRewards(@NonNull List<Employee> employees) {
         for (Employee employee : employees) {
-            List<Reward> rewards = rewardRepository.findByEmployeeIdAndStatusAndJobTypeIn(
+            List<Reward> rewards = rewardRepository.findByEmployeeIdAndRewardStatusAndJobTypeIn(
                     employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
             for (Reward reward : rewards) {
                 Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());

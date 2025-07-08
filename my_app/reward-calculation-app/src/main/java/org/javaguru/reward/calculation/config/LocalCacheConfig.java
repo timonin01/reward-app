@@ -1,6 +1,7 @@
 package org.javaguru.reward.calculation.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -33,8 +34,8 @@ public class LocalCacheConfig {
     }
 
     @Bean
-    public CacheManager cacheManager(Caffeine<Object, Object> tariffCacheConfig,
-                                     Caffeine<Object, Object> jobTypesCacheConfig) {
+    public CacheManager cacheManager(@Qualifier("tariffCacheConfig") Caffeine<Object, Object> tariffCacheConfig,
+                                     @Qualifier("jobTypesCacheConfig") Caffeine<Object, Object> jobTypesCacheConfig) {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
 
         // Define caches with names and configurations

@@ -6,6 +6,7 @@ import org.javaguru.reward.calculation.rest.employee.EmployeeDTO;
 import org.javaguru.reward.calculation.rest.employee.GetEmployeeResponse;
 import org.javaguru.reward.calculation.service.domain.Employee;
 import org.javaguru.reward.calculation.service.domain.Reward;
+import org.javaguru.reward.calculation.service.domain.RewardStatus;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,7 @@ public class GetRewardController {
         rewardDTO.setId(reward.getId());
         rewardDTO.setEmployeeId(reward.getEmployeeId());
         rewardDTO.setJobType(reward.getJobType().name());
-        rewardDTO.setRewardStatus(reward.getRewardStatus() != null ? reward.getRewardStatus().name() : null);
+        rewardDTO.setRewardStatus(reward.getRewardStatus().name());
         return rewardDTO;
     }
 
