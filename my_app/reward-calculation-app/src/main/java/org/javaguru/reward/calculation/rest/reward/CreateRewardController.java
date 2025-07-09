@@ -27,7 +27,9 @@ public class CreateRewardController {
     public CreateRewardResponse createReward(@RequestBody CreateRewardRequest request) {
         Reward reward = saveRewardInDb(request);
         RewardDTO dto = createRewardDto(reward);
-        return new CreateRewardResponse(dto);
+        CreateRewardResponse response = new CreateRewardResponse(dto);
+        log.info("Created CreateRewardResponse with status: {}", response.getRewardDTO().getRewardStatus());
+        return response;
     }
 
     private Reward saveRewardInDb(CreateRewardRequest request){
