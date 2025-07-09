@@ -53,6 +53,8 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 
+	implementation('io.github.resilience4j:resilience4j-spring-boot3:2.0.2')
+
 }
 
 test {

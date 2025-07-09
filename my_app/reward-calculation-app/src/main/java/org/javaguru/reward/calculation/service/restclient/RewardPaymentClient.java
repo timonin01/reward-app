@@ -1,13 +1,17 @@
 package org.javaguru.reward.calculation.service.restclient;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.javaguru.reward.calculation.config.RetryConfig;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardPaymentClient {
@@ -15,6 +19,7 @@ public class RewardPaymentClient {
 //    Создается в RewardPaymentClientConfig
     private final RestClient rewardPaymentRestClient;
 
+    @Retry(name = RetryConfig.PAY_REWARD_CONFIG, fallbackMethod = "fallback")
     public void payReward(Long employeeId, BigDecimal amount) {
         RewardPaymentRequest request = new RewardPaymentRequest(employeeId, amount);
 
@@ -23,6 +28,13 @@ public class RewardPaymentClient {
                 .body(request)
                 .retrieve()
                 .body(RewardPaymentResponse.class);
+    }
+
+    public void fallback(Long employeeId,
+                         BigDecimal amount,
+                         Exception ex) throws Exception {
+        log.error("Error: payReward retry exception", ex);
+        throw ex;
     }
 
 }
