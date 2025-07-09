@@ -17,7 +17,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
     @Test
     public void shouldPayJobType_HELP() {
         // clean db
-        cleanPaymentDb(true);
+//        cleanPaymentDb(true);
         cleanRewardDb(true, true, true, true);
 
         // create employees
