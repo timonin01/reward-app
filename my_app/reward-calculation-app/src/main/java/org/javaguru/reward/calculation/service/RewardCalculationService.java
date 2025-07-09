@@ -36,8 +36,7 @@ public class RewardCalculationService {
 
     private final JobTypesToPayService jobTypesToPayService;
     private final RewardRepository rewardRepository;
-    private final TariffRepository tariffRepository;
-    private final RewardPaymentClient rewardPaymentClient;
+    private final RewardCalculationAndPaymentService rewardCalculationAndPaymentService;
 
     @Transactional
     public void calculateRewards(@NonNull List<Employee> employees) {
@@ -45,28 +44,9 @@ public class RewardCalculationService {
             List<Reward> rewards = rewardRepository.findByEmployeeIdAndRewardStatusAndJobTypeIn(
                     employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
             for (Reward reward : rewards) {
-                Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
-                if(tariff.isPresent()) {
-                    BigDecimal amount = calculateAmount(employee, tariff.get());
-                    rewardPaymentClient.payReward(employee.getId(), amount);
-                    log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
-                            + ", ID = " + employee.getId() + " with " + amount);
-                    reward.setRewardStatus(RewardStatus.PAID);
-                    rewardRepository.save(reward);
-                }
-                else {
-                    log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
-                            + ", ID = " + employee.getId() + ",because Tariff does not exist");
-                    reward.setRewardStatus(RewardStatus.NOT_PAID);
-                    rewardRepository.save(reward);
-                }
+                rewardCalculationAndPaymentService.calculateAndPayReward(employee,reward);
             }
         }
-    }
-
-    private BigDecimal calculateAmount(Employee employee, Tariff tariff){
-        return (BigDecimal.ONE.add(employee.getBonusCoefficient()).multiply(tariff.getAmount()))
-                .setScale(2, RoundingMode.HALF_UP);
     }
 
 }
