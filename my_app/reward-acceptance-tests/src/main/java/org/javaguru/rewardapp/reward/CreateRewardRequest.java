@@ -15,6 +15,6 @@ public class CreateRewardRequest {
 
     private String jobType;
 
-    private String status;
+    private String rewardStatus;
 
 }

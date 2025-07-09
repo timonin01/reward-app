@@ -62,8 +62,8 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public RewardDTO createReward(Long employeeId,
                                   String jobType,
-                                  String status) {
-        return createRewardAction.createReward(employeeId, jobType, status);
+                                  String rewardStatus) {
+        return createRewardAction.createReward(employeeId, jobType, rewardStatus);
     }
 
     public JobTypesDTO createAllowedToPayJobType(String jobType) {

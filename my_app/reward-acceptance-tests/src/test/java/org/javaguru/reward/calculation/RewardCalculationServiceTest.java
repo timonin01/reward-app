@@ -191,7 +191,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         assertNotNull(rewardDTO.getId());
         assertEquals(rewardDTO.getEmployeeId(), employeeDTO.getId());
         assertEquals(rewardDTO.getJobType(), jobType);
-        assertEquals(rewardDTO.getStatus(), status);
+        assertEquals(rewardDTO.getRewardStatus(), status);
     }
 
     private void checkPayment(PaymentDTO paymentDTO, EmployeeDTO employeeDTO, BigDecimal amount) {

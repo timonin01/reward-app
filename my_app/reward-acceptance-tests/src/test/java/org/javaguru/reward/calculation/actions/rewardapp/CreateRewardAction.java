@@ -14,14 +14,14 @@ public class CreateRewardAction {
 
     public RewardDTO createReward(Long employeeId,
                                   String jobType,
-                                  String status) {
+                                  String rewardStatus) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         CreateRewardRequest request = new CreateRewardRequest();
         request.setEmployeeId(employeeId);
         request.setJobType(jobType);
-        request.setStatus(status);
+        request.setRewardStatus(rewardStatus);
 
         HttpEntity<CreateRewardRequest> requestEntity = new HttpEntity<>(request, headers);
 
