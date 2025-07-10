@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "tim" id = "11">
+        <createTable tableName="reward_transactional_outbox">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="reward_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="tim" id="12">
+        <addForeignKeyConstraint baseTableName="reward_transactional_outbox"
+                                 baseColumnNames="reward_id"
+                                 constraintName="fk_reward_transactional_outbox_reward_id"
+                                 referencedTableName="rewards"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

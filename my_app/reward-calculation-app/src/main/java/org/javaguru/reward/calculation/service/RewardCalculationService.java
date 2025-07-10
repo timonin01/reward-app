@@ -29,24 +29,9 @@ import java.util.Set;
  * Оплата проходит через внешний сервис, вызываемый по REST.
  */
 
-@Slf4j
-@Service
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class RewardCalculationService {
 
-    private final JobTypesToPayService jobTypesToPayService;
-    private final RewardRepository rewardRepository;
-    private final RewardCalculationAndPaymentService rewardCalculationAndPaymentService;
+public interface RewardCalculationService {
 
-    public void calculateRewards(@NonNull List<Employee> employees) {
-        employees.forEach(employee ->  findAllRewardsByEmployeeIdAndRewardStatusAndJobType(employee)
-            .forEach(reward -> rewardCalculationAndPaymentService.calculateAndPayReward(employee,reward))
-        );
-    }
-
-    private List<Reward> findAllRewardsByEmployeeIdAndRewardStatusAndJobType(Employee employee){
-        return rewardRepository.findByEmployeeIdAndRewardStatusAndJobTypeIn(
-                employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
-    }
+    void calculateRewards(List<Employee> employees);
 
 }

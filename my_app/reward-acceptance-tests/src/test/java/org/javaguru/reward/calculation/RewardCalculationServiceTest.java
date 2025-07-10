@@ -32,6 +32,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
+
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
         checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
@@ -59,6 +62,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
+
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
         checkReward(rewardDTO, employeeDTO, "SPEECH", "PAID");
@@ -85,6 +91,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // invoke calculateRewards()
         rewardCalculation();
+
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
@@ -115,6 +124,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
+
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
         checkPayment(paymentDTO1, employeeDTO1, new BigDecimal("45.0"));
@@ -143,6 +155,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // invoke calculateRewards()
         rewardCalculation();
+
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
 
         // check Reward
         rewardDTO1 = getReward(rewardDTO1.getId());
@@ -176,6 +191,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         // invoke calculateRewards()
         rewardCalculation();
+
+        // sleep for 6 seconds for transactional outbox job
+        sleep(6);
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());

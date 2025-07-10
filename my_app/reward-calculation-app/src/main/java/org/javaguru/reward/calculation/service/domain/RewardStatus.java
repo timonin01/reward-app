@@ -4,6 +4,7 @@ public enum RewardStatus {
 
     PAID,
     NOT_PAID,
+    IN_PROGRESS,
     NEW
 
 }

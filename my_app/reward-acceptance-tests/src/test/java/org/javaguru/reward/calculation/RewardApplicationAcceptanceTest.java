@@ -13,6 +13,7 @@ import org.javaguru.rewardapp.tariff.TariffDTO;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 
 public abstract class RewardApplicationAcceptanceTest {
 
@@ -84,5 +85,13 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public RewardDTO getReward(Long rewardId) {
         return getRewardAction.getReward(rewardId);
+    }
+
+    public void sleep(int seconds) {
+        try {
+            Thread.sleep(Duration.ofSeconds(seconds));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

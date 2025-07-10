@@ -4,13 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javaguru.reward.calculation.service.domain.Employee;
-import org.javaguru.reward.calculation.service.domain.Reward;
-import org.javaguru.reward.calculation.service.domain.RewardStatus;
-import org.javaguru.reward.calculation.service.domain.Tariff;
+import org.javaguru.reward.calculation.service.domain.*;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
+import org.javaguru.reward.calculation.service.repositories.RewardTransactionalOutboxRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
-import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,23 +17,28 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class RewardCalculationAndPaymentService {
+public class RewardCalculationProcessRewardService {
 
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
-    private final RewardPaymentClient rewardPaymentClient;
+    private final RewardTransactionalOutboxRepository rewardTransactionalOutboxRepository;
 
     @Transactional
-    public void calculateAndPayReward(Employee employee, Reward reward) {
+    public void processReward(Employee employee, Reward reward){
         Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
         if (tariff.isPresent()) {
             BigDecimal amount = calculateAmount(employee, tariff.get());
-            rewardPaymentClient.payReward(employee.getId(), amount);
-            log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
-                    + ", ID = " + employee.getId() + " with " + amount);
+
             reward.setAmount(amount);
-            reward.setRewardStatus(RewardStatus.PAID);
-            rewardRepository.save(reward);
+            reward.setRewardStatus(RewardStatus.IN_PROGRESS);
+
+            RewardTransactionalOutbox rewardTransactionalOutbox = new RewardTransactionalOutbox();
+            rewardTransactionalOutbox.setReward(reward);
+            rewardTransactionalOutbox.setStatus(TransactionalOutboxStatus.NEW);
+            rewardTransactionalOutboxRepository.save(rewardTransactionalOutbox);
+
+            log.info("Payment in progress by " + employee.getFirstName() + " " + employee.getLastName()
+                    + ", ID = " + employee.getId() + " with " + amount);
         } else {
             log.info("Payment not sent to " + employee.getFirstName() + " " + employee.getLastName()
                     + ", ID = " + employee.getId() + ",because Tariff does not exist");

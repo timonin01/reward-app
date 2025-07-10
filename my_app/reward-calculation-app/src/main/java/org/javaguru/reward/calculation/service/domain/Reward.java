@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "rewards")
 @Getter
@@ -29,5 +31,8 @@ public class Reward {
     @Enumerated(EnumType.STRING)
     @Column(name = "reward_status",nullable = false)
     private RewardStatus rewardStatus;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
 
 }

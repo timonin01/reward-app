@@ -3,10 +3,7 @@ package org.javaguru.reward.calculation.rest.cleandb;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.javaguru.reward.calculation.config.LocalCacheConfig;
-import org.javaguru.reward.calculation.service.repositories.EmployeeRepository;
-import org.javaguru.reward.calculation.service.repositories.JobTypesRepository;
-import org.javaguru.reward.calculation.service.repositories.RewardRepository;
-import org.javaguru.reward.calculation.service.repositories.TariffRepository;
+import org.javaguru.reward.calculation.service.repositories.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +20,7 @@ public class CleanDBController {
     private final RewardRepository rewardRepository;
     private final TariffRepository tariffRepository;
     private final JobTypesRepository jobTypesRepository;
+    private final RewardTransactionalOutboxRepository rewardTransactionalOutboxRepository;
 
     @PostMapping(path = "/",
         consumes = "application/json",
@@ -44,6 +42,7 @@ public class CleanDBController {
         }
 
         if (request.isCleanReward()) {
+            rewardTransactionalOutboxRepository.deleteAll();
             rewardRepository.deleteAll();
             response.setRewardDeleted(true);
         }
