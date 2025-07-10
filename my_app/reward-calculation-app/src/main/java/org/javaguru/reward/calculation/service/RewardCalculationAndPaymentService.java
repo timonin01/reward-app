@@ -1,5 +1,6 @@
 package org.javaguru.reward.calculation.service;
 
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class RewardCalculationAndPaymentService {
     private final TariffRepository tariffRepository;
     private final RewardPaymentClient rewardPaymentClient;
 
+    @Transactional
     public void calculateAndPayReward(Employee employee, Reward reward) {
         Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
         if (tariff.isPresent()) {

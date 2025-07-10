@@ -38,15 +38,15 @@ public class RewardCalculationService {
     private final RewardRepository rewardRepository;
     private final RewardCalculationAndPaymentService rewardCalculationAndPaymentService;
 
-    @Transactional
     public void calculateRewards(@NonNull List<Employee> employees) {
-        for (Employee employee : employees) {
-            List<Reward> rewards = rewardRepository.findByEmployeeIdAndRewardStatusAndJobTypeIn(
-                    employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
-            for (Reward reward : rewards) {
-                rewardCalculationAndPaymentService.calculateAndPayReward(employee,reward);
-            }
-        }
+        employees.forEach(employee ->  findAllRewardsByEmployeeIdAndRewardStatusAndJobType(employee)
+            .forEach(reward -> rewardCalculationAndPaymentService.calculateAndPayReward(employee,reward))
+        );
+    }
+
+    private List<Reward> findAllRewardsByEmployeeIdAndRewardStatusAndJobType(Employee employee){
+        return rewardRepository.findByEmployeeIdAndRewardStatusAndJobTypeIn(
+                employee.getId(), RewardStatus.NEW, jobTypesToPayService.loadJobTypesToPay());
     }
 
 }
