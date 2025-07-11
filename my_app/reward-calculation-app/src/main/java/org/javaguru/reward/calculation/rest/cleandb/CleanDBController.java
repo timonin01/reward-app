@@ -42,7 +42,7 @@ public class CleanDBController {
         }
 
         if (request.isCleanReward()) {
-            rewardTransactionalOutboxRepository.deleteAll();
+//            rewardTransactionalOutboxRepository.deleteAll();
             rewardRepository.deleteAll();
             response.setRewardDeleted(true);
         }

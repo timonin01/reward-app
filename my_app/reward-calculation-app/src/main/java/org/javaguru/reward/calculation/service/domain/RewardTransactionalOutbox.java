@@ -19,7 +19,7 @@ public class RewardTransactionalOutbox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "reward_id", nullable = false)
     private Reward reward;
 

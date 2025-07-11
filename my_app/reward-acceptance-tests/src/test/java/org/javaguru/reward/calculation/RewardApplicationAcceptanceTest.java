@@ -8,6 +8,7 @@ import org.javaguru.reward.calculation.actions.rewardapp.*;
 import org.javaguru.rewardapp.cleandb.CleanRewardDbResponse;
 import org.javaguru.rewardapp.employee.EmployeeDTO;
 import org.javaguru.rewardapp.jobtypes.JobTypesDTO;
+import org.javaguru.rewardapp.outbox.RewardTransactionalOutboxDTO;
 import org.javaguru.rewardapp.reward.RewardDTO;
 import org.javaguru.rewardapp.tariff.TariffDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,8 @@ public abstract class RewardApplicationAcceptanceTest {
     private RewardCalculationAction rewardCalculationAction;
     private GetRewardAction getRewardAction;
     private CreateJobTypesAction createJobTypesAction;
+    private LaunchJobAction launchJobAction;
+    private GetRewardTransactionalOutboxAction getRewardTransactionalOutboxAction;
 
     private SearchPaymentAction searchPaymentAction;
 
@@ -42,6 +45,12 @@ public abstract class RewardApplicationAcceptanceTest {
         createJobTypesAction = new CreateJobTypesAction();
 
         searchPaymentAction = new SearchPaymentAction();
+        launchJobAction = new LaunchJobAction();
+        getRewardTransactionalOutboxAction = new GetRewardTransactionalOutboxAction();
+    }
+
+    public void launchJob() {
+        launchJobAction.launchJob();
     }
 
     public CleanPaymentDbResponse cleanPaymentDb(boolean cleanPayment) {
@@ -85,6 +94,10 @@ public abstract class RewardApplicationAcceptanceTest {
 
     public RewardDTO getReward(Long rewardId) {
         return getRewardAction.getReward(rewardId);
+    }
+
+    public RewardTransactionalOutboxDTO getRewardTransactionalOutbox(Long rewardId) {
+        return getRewardTransactionalOutboxAction.getRewardTransactionalOutbox(rewardId);
     }
 
     public void sleep(int seconds) {

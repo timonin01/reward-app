@@ -2,6 +2,7 @@ package org.javaguru.reward.calculation;
 
 import org.javaguru.paymentapp.payment.PaymentDTO;
 import org.javaguru.rewardapp.employee.EmployeeDTO;
+import org.javaguru.rewardapp.outbox.RewardTransactionalOutboxDTO;
 import org.javaguru.rewardapp.reward.RewardDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
     @Test
     public void shouldPayJobType_HELP() {
         // clean db
-//        cleanPaymentDb(true);
+        cleanPaymentDb(true);
         cleanRewardDb(true, true, true, true);
 
         // create employees
@@ -32,12 +33,16 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
         checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox = getRewardTransactionalOutbox(rewardDTO.getId());
+        checkOutbox(outbox, rewardDTO);
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 45.0);
@@ -62,12 +67,16 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
         checkReward(rewardDTO, employeeDTO, "SPEECH", "PAID");
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox = getRewardTransactionalOutbox(rewardDTO.getId());
+        checkOutbox(outbox, rewardDTO);
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
@@ -92,12 +101,16 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
         checkReward(rewardDTO, employeeDTO, "LESSON", "PAID");
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox = getRewardTransactionalOutbox(rewardDTO.getId());
+        checkOutbox(outbox, rewardDTO);
 
         // check payments
         PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
@@ -124,8 +137,15 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox1 = getRewardTransactionalOutbox(rewardDTO1.getId());
+        checkOutbox(outbox1, rewardDTO1);
+
+        RewardTransactionalOutboxDTO outbox2 = getRewardTransactionalOutbox(rewardDTO2.getId());
+        checkOutbox(outbox2, rewardDTO2);
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
@@ -156,8 +176,8 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
 
         // check Reward
         rewardDTO1 = getReward(rewardDTO1.getId());
@@ -165,6 +185,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
 
         rewardDTO2 = getReward(rewardDTO2.getId());
         checkReward(rewardDTO2, employeeDTO2, "LESSON", "PAID");
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox1 = getRewardTransactionalOutbox(rewardDTO1.getId());
+        checkOutbox(outbox1, rewardDTO1);
+
+        RewardTransactionalOutboxDTO outbox2 = getRewardTransactionalOutbox(rewardDTO2.getId());
+        checkOutbox(outbox2, rewardDTO2);
 
         // check payments
         PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
@@ -192,8 +219,12 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         // invoke calculateRewards()
         rewardCalculation();
 
-        // sleep for 6 seconds for transactional outbox job
-        sleep(6);
+        // launch transactional outbox job
+        launchJob();
+
+        // check transactional outbox records
+        RewardTransactionalOutboxDTO outbox = getRewardTransactionalOutbox(rewardDTO.getId());
+        checkOutbox(outbox, rewardDTO);
 
         // check Reward
         rewardDTO = getReward(rewardDTO.getId());
@@ -217,6 +248,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         assertNotNull(paymentDTO.getId());
         assertEquals(paymentDTO.getEmployeeId(), employeeDTO.getId());
         assertEquals(0, paymentDTO.getAmount().compareTo(amount));
+    }
+
+    private void checkOutbox(RewardTransactionalOutboxDTO outbox, RewardDTO rewardDTO) {
+        assertNotNull(outbox);
+        assertNotNull(outbox.getId());
+        assertEquals(outbox.getRewardId(), rewardDTO.getId());
+        assertEquals(outbox.getStatus(), "PROCESSED");
     }
 
 }

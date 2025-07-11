@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rewards")
@@ -34,5 +36,9 @@ public class Reward {
 
     @Column(name = "amount")
     private BigDecimal amount;
+
+    // для каскадного удаления
+    @OneToMany(mappedBy = "reward", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RewardTransactionalOutbox> outboxEntries = new ArrayList<>();
 
 }
