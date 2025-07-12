@@ -4,13 +4,11 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javaguru.reward.calculation.service.domain.Reward;
-import org.javaguru.reward.calculation.service.domain.RewardStatus;
-import org.javaguru.reward.calculation.service.domain.RewardTransactionalOutbox;
-import org.javaguru.reward.calculation.service.domain.TransactionalOutboxStatus;
+import org.javaguru.reward.calculation.service.domain.*;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardTransactionalOutboxRepository;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
+import org.javaguru.reward.calculation.service.restclient.RewardPaymentResponse;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -28,15 +26,21 @@ public class RewardTransactionalOutboxProcessingService {
 
         // send to reward-payment-app
         Reward reward = rewardTransactionalOutbox.getReward();
-        rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getAmount());
+        RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getAmount());
+
+        // update reward status
+        if (PaymentStatus.SUCCESS.name().equals(paymentResponse.getStatus())) {
+            log.info("Set RewardStatus to PAID");
+            reward.setRewardStatus(RewardStatus.PAID);
+        } else {
+            log.info("Set RewardStatus to NOT_PAID");
+            reward.setRewardStatus(RewardStatus.NOT_PAID);
+        }
+        rewardRepository.save(reward);
 
         // update transactional outbox status
         rewardTransactionalOutbox.setStatus(TransactionalOutboxStatus.PROCESSED);
         rewardTransactionalOutboxRepository.save(rewardTransactionalOutbox);
-
-        // update reward status
-        reward.setRewardStatus(RewardStatus.PAID);
-        rewardRepository.save(reward);
 
         log.info("Finish processing rewardTransactionalOutbox with id = " + rewardTransactionalOutbox.getId());
     }
