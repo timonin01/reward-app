@@ -67,6 +67,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://reward-calculation-app:8080/actuator/health" ]
+      interval: 1s
+      timeout: 5s
+      retries: 100
 
   reward-payment-app:
     networks: [tim-network]
@@ -83,6 +88,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://reward-payment-app:8090/actuator/health" ]
+      interval: 1s
+      timeout: 5s
+      retries: 100
 
 volumes:
   redis_data:
