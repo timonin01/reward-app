@@ -56,8 +56,8 @@ services:
     networks: [tim-network]
     container_name: reward-calculation-app
     image: reward-calculation-app:1.0.2
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
     environment:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PASSWORD: SecurePass123
@@ -77,8 +77,8 @@ services:
     networks: [tim-network]
     container_name: reward-payment-app
     image: reward-payment-app:1.0.2
-    ports:
-      - "8090:8090"
+#    ports:
+#      - "8090:8090"
     environment:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PASSWORD: SecurePass123
@@ -93,6 +93,31 @@ services:
       interval: 1s
       timeout: 5s
       retries: 100
+
+  reward-calculation-lb:
+    networks: [tim-network]
+    image: nginx:latest
+    container_name: reward-calculation-lb
+    ports:
+      - "8080:8080" # Балансировщик будет слушать порт 8080
+    volumes:
+      - ./reward-calculation-nginx.conf:/etc/nginx/nginx.conf:ro # Передаем конфиг NGINX внутрь контейнера
+    depends_on:
+      reward-calculation-app:
+        condition: service_healthy
+
+  reward-payment-lb:
+    networks: [tim-network]
+    image: nginx:latest
+    container_name: reward-payment-lb
+    ports:
+      - "8090:8090" # Балансировщик будет слушать порт 8090
+    volumes:
+      - ./reward-payment-nginx.conf:/etc/nginx/nginx.conf:ro # Передаем конфиг NGINX внутрь контейнера
+    depends_on:
+      reward-payment-app:
+        condition: service_healthy
+
 
 volumes:
   redis_data:
