@@ -25,8 +25,9 @@ public class RewardTransactionalOutboxProcessingService {
         log.info("Start processing rewardTransactionalOutbox with id = " + rewardTransactionalOutbox.getId());
 
         // send to reward-payment-app
-        Reward reward = rewardTransactionalOutbox.getReward();
-        RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getAmount());
+        try {
+            Reward reward = rewardTransactionalOutbox.getReward();
+            RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getAmount());
 
         // update reward status
         if (PaymentStatus.SUCCESS.name().equals(paymentResponse.getStatus())) {
@@ -41,6 +42,9 @@ public class RewardTransactionalOutboxProcessingService {
         // update transactional outbox status
         rewardTransactionalOutbox.setStatus(TransactionalOutboxStatus.PROCESSED);
         rewardTransactionalOutboxRepository.save(rewardTransactionalOutbox);
+        }catch (Throwable e) {
+            log.error("Transactional Outbox exception", e);
+        }
 
         log.info("Finish processing rewardTransactionalOutbox with id = " + rewardTransactionalOutbox.getId());
     }

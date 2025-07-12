@@ -26,6 +26,12 @@ services:
     volumes:
       - mysql_calc_data:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -pLalka123 || exit 1" ]
+      interval: 5s      # How often to perform the health check (e.g., every 10 seconds)
+      timeout: 1s        # Maximum time to wait for the health check to respond
+      retries: 100         # Number of retries before marking the container as unhealthy
+      start_period: 10s  # Initial delay before starting health checks (useful for slow-starting services)
 
   reward-payment-db:
     networks: [tim-network]
@@ -39,6 +45,12 @@ services:
     volumes:
       - mysql_payment_data:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -pLalka123 || exit 1" ]
+      interval: 5s      # How often to perform the health check (e.g., every 10 seconds)
+      timeout: 1s        # Maximum time to wait for the health check to respond
+      retries: 100         # Number of retries before marking the container as unhealthy
+      start_period: 10s  # Initial delay before starting health checks (useful for slow-starting services)
 
   reward-calculation-app:
     networks: [tim-network]
@@ -51,8 +63,10 @@ services:
       SPRING_REDIS_PASSWORD: SecurePass123
       SPRING_REDISSON_FILE: classpath:/redisson.yaml
     depends_on:
-      - reward-calculation-db
-      - redis
+      reward-calculation-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   reward-payment-app:
     networks: [tim-network]
@@ -65,8 +79,10 @@ services:
       SPRING_REDIS_PASSWORD: SecurePass123
       SPRING_REDISSON_FILE: classpath:/redisson.yaml
     depends_on:
-      - reward-payment-db
-      - redis
+      reward-payment-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
 volumes:
   redis_data:
