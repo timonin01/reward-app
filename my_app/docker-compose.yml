@@ -52,45 +52,69 @@ services:
       retries: 100         # Number of retries before marking the container as unhealthy
       start_period: 10s  # Initial delay before starting health checks (useful for slow-starting services)
 
-  reward-calculation-app:
+  reward-calculation-app-instance-1:
     networks: [tim-network]
-    container_name: reward-calculation-app
+    container_name: reward-calculation-app-instance-1
     image: reward-calculation-app:1.0.2
-#    ports:
-#      - "8080:8080"
-    environment:
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PASSWORD: SecurePass123
-      SPRING_REDISSON_FILE: classpath:/redisson.yaml
+    #ports:
+    #  - "8080:8080"
     depends_on:
       reward-calculation-db:
         condition: service_healthy
       redis:
         condition: service_started
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://reward-calculation-app:8080/actuator/health" ]
-      interval: 1s
+      test: [ "CMD", "curl", "-f", "http://reward-calculation-app-instance-1:8080/actuator/health" ]
+      interval: 5s
       timeout: 5s
       retries: 100
 
-  reward-payment-app:
+  reward-calculation-app-instance-2:
     networks: [tim-network]
-    container_name: reward-payment-app
+    container_name: reward-calculation-app-instance-2
+    image: reward-calculation-app:1.0.2
+    #ports:
+    #  - "8080:8080"
+    depends_on:
+      reward-calculation-db:
+        condition: service_healthy
+      reward-calculation-app-instance-1:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://reward-calculation-app-instance-2:8080/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+
+  reward-payment-app-instance-1:
+    networks: [tim-network]
+    container_name: reward-payment-app-instance-1
     image: reward-payment-app:1.0.2
-#    ports:
-#      - "8090:8090"
-    environment:
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PASSWORD: SecurePass123
-      SPRING_REDISSON_FILE: classpath:/redisson.yaml
+    #ports:
+    #  - "8090:8090"
     depends_on:
       reward-payment-db:
         condition: service_healthy
-      redis:
-        condition: service_started
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://reward-payment-app:8090/actuator/health" ]
-      interval: 1s
+      test: [ "CMD", "curl", "-f", "http://reward-payment-app-instance-1:8090/actuator/health" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+
+  reward-payment-app-instance-2:
+    networks: [tim-network]
+    container_name: reward-payment-app-instance-2
+    image: reward-payment-app:1.0.2
+    #ports:
+    #  - "8090:8090"
+    depends_on:
+      reward-payment-db:
+        condition: service_healthy
+      reward-payment-app-instance-1:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://reward-payment-app-instance-2:8090/actuator/health" ]
+      interval: 5s
       timeout: 5s
       retries: 100
 
@@ -103,7 +127,9 @@ services:
     volumes:
       - ./reward-calculation-nginx.conf:/etc/nginx/nginx.conf:ro # Передаем конфиг NGINX внутрь контейнера
     depends_on:
-      reward-calculation-app:
+      reward-calculation-app-instance-1:
+        condition: service_healthy
+      reward-calculation-app-instance-2:
         condition: service_healthy
 
   reward-payment-lb:
@@ -115,7 +141,9 @@ services:
     volumes:
       - ./reward-payment-nginx.conf:/etc/nginx/nginx.conf:ro # Передаем конфиг NGINX внутрь контейнера
     depends_on:
-      reward-payment-app:
+      reward-payment-app-instance-1:
+        condition: service_healthy
+      reward-payment-app-instance-2:
         condition: service_healthy
 
 
