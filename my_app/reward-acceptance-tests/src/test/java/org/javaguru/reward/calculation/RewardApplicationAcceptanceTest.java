@@ -89,12 +89,20 @@ public abstract class RewardApplicationAcceptanceTest {
         rewardCalculationAction.calculateRewards();
     }
 
-    public List<PaymentDTO> getPayments(Long employeeId, Double amount) {
-        return searchPaymentAction.getPayments(employeeId, amount);
+    public List<PaymentDTO> getPayments(Long employeeId, Long rewardId, Double amount) {
+        return searchPaymentAction.getPayments(employeeId,rewardId, amount);
+    }
+
+    public List<PaymentDTO> getPayments(Long employeeId,Double amount) {
+        return searchPaymentAction.getPayments(employeeId,null, amount);
+    }
+
+    public List<PaymentDTO> getPayments(Long employeeId,Long rewardId) {
+        return searchPaymentAction.getPayments(employeeId,rewardId, null);
     }
 
     public List<PaymentDTO> getPayments(Long employeeId) {
-        return searchPaymentAction.getPayments(employeeId, null);
+        return searchPaymentAction.getPayments(employeeId,null, null);
     }
 
     public RewardDTO getReward(Long rewardId) {

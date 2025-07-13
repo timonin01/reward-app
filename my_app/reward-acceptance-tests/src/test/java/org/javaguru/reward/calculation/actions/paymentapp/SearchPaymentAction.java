@@ -12,10 +12,13 @@ public class SearchPaymentAction {
 
     private static String baseUrl = "http://localhost:8090/api/test/payment/search";
 
-    public List<PaymentDTO> getPayments(Long employeeId, Double amount) {
+    public List<PaymentDTO> getPayments(Long employeeId, Long rewardId, Double amount) {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
                 .queryParam("employeeId", employeeId);
+        if(rewardId != null){
+            builder = builder.queryParam("rewardId", rewardId);
+        }
         if (amount != null) {
             builder = builder.queryParam("amount", amount);
         }

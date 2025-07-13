@@ -46,7 +46,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 45.0);
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), rewardDTO.getId(), 45.0);
         assertEquals(payments.size(), 1);
         checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("45.0"));
     }
@@ -81,7 +81,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), rewardDTO.getId(), 30.0);
         assertEquals(payments.size(), 1);
         checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }
@@ -116,7 +116,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(),rewardDTO.getId(), 30.0);
         assertEquals(payments.size(), 1);
         checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }
@@ -152,11 +152,11 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox2, rewardDTO2);
 
         // check payments
-        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(), 45.0);
+        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(),rewardDTO1.getId(), 45.0);
         assertEquals(payments1.size(), 1);
         checkPayment(payments1.getFirst(), employeeDTO1, new BigDecimal("45.0"));
 
-        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(), 45.0);
+        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(),rewardDTO2.getId(), 45.0);
         assertEquals(payments2.size(), 1);
         checkPayment(payments2.getFirst(), employeeDTO2, new BigDecimal("45.0"));
     }
@@ -200,11 +200,11 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox2, rewardDTO2);
 
         // check payments
-        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(), 45.0);
+        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(),rewardDTO1.getId(), 45.0);
         assertEquals(payments1.size(), 1);
         checkPayment(payments1.getFirst(), employeeDTO1, new BigDecimal("45.0"));
 
-        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(), 45.0);
+        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(),rewardDTO2.getId(), 45.0);
         assertEquals(payments2.size(), 1);
         checkPayment(payments2.getFirst(), employeeDTO2, new BigDecimal("45.0"));
     }
@@ -239,7 +239,7 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
 
         // check payments
-        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(),rewardDTO.getId(), 30.0);
         assertEquals(payments.size(), 1);
         checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }

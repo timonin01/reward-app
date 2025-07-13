@@ -21,6 +21,8 @@ public class PaymentDTO {
 
     private Long employeeId;
 
+    private Long rewardId;
+
     private BigDecimal amount;
 
 }

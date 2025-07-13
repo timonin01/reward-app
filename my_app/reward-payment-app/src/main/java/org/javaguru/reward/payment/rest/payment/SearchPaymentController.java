@@ -23,13 +23,14 @@ public class SearchPaymentController {
     @GetMapping(path = "/search",
             produces = "application/json")
     public SearchPaymentResponse searchPayment(@RequestParam(required = true) Long employeeId,
+                                               @RequestParam(required = false) Long rewardId,
                                                @RequestParam(required = false) Double amount) {
-        List<PaymentDTO> paymentDTO = searchPaymentInDB(employeeId,amount);
+        List<PaymentDTO> paymentDTO = searchPaymentInDB(employeeId,rewardId,amount);
         return new SearchPaymentResponse(paymentDTO);
     }
 
-    private List<PaymentDTO> searchPaymentInDB(Long employeeId,Double amount){
-        List<PaymentDTO> payment = getPayments(employeeId, amount)
+    private List<PaymentDTO> searchPaymentInDB(Long employeeId, Long rewardId,Double amount){
+        List<PaymentDTO> payment = getPayments(employeeId,rewardId, amount)
                 .stream()
                 .map(this::createPaymentDTO)
                 .toList();
@@ -37,16 +38,23 @@ public class SearchPaymentController {
         return payment;
     }
 
-    private List<Payment> getPayments(Long employeeId,Double amount){
-        return amount == null
-                ? paymentRepository.findByEmployeeId(employeeId)
-                : paymentRepository.findByEmployeeIdAndAmount(employeeId, BigDecimal.valueOf(amount));
+    private List<Payment> getPayments(Long employeeId,Long rewardId,Double amount){
+        if(amount == null && rewardId == null){
+            return paymentRepository.findByEmployeeId(employeeId);
+        }if(amount == null) {
+            return paymentRepository.findByEmployeeIdAndRewardId(employeeId,rewardId);
+        }
+        if(rewardId == null){
+            return paymentRepository.findByEmployeeIdAndAmount(employeeId, BigDecimal.valueOf(amount));
+        }
+        return paymentRepository.findByEmployeeIdAndRewardIdAndAmount(employeeId,rewardId,BigDecimal.valueOf(amount));
     }
 
     private PaymentDTO createPaymentDTO(Payment payment){
         PaymentDTO paymentDTO = new PaymentDTO();
         paymentDTO.setId(payment.getId());
         paymentDTO.setEmployeeId(payment.getEmployeeId());
+        paymentDTO.setRewardId(payment.getRewardId());
         paymentDTO.setAmount(payment.getAmount());
         return paymentDTO;
     }

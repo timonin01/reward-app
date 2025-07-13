@@ -13,4 +13,8 @@ public interface PaymentRepository  extends JpaRepository<Payment, Long> {
 
     List<Payment> findByEmployeeIdAndAmount(Long employeeId, BigDecimal amount);
 
+    List<Payment> findByEmployeeIdAndRewardId(Long employeeId, Long rewardId);
+
+    List<Payment> findByEmployeeIdAndRewardIdAndAmount(Long employeeId, Long rewardId,BigDecimal amount);
+
 }
