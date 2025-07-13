@@ -31,9 +31,14 @@ public class RewardPaymentClient {
     }
 
     public void fallback(Long employeeId,
+                         Long rewardId,
                          BigDecimal amount,
                          Exception ex) throws Exception {
-        log.error("Error: payReward retry exception", ex);
+        log.error("Error: payReward retry exception"
+                        + " employeeId = " + employeeId
+                        + " rewardId = " + rewardId
+                        + " amount = " + amount
+                , ex);
         throw ex;
     }
 
