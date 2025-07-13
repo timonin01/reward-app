@@ -24,7 +24,7 @@ public class RewardPaymentController {
             produces = "application/json")
     public RewardPaymentResponse payReward(@RequestBody RewardPaymentRequest request) {
         try {
-            rewardPaymentService.pay(request.getEmployeeId(), request.getAmount());
+            rewardPaymentService.pay(request.getEmployeeId(), request.getRewardId(), request.getAmount());
         } catch (Throwable e) {
             log.info("Send RewardPaymentResponse with PaymentStatus.FAIL");
             return new RewardPaymentResponse(PaymentStatus.FAIL.name());

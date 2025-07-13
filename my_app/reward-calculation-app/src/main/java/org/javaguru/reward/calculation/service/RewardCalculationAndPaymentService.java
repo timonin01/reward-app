@@ -31,7 +31,7 @@ public class RewardCalculationAndPaymentService {
         Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
         if (tariff.isPresent()) {
             BigDecimal amount = calculateAmount(employee, tariff.get());
-            rewardPaymentClient.payReward(employee.getId(), amount);
+            rewardPaymentClient.payReward(employee.getId(), reward.getId(), amount);
             log.info("Payment sent to " + employee.getFirstName() + " " + employee.getLastName()
                     + ", ID = " + employee.getId() + " with " + amount);
             reward.setAmount(amount);

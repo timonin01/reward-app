@@ -19,4 +19,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet author = "tim" id = "2">
+        <addColumn tableName="payments">
+            <column name="reward_id" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

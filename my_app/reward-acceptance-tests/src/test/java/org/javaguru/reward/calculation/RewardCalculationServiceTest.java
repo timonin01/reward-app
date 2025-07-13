@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,8 +46,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 45.0);
-        checkPayment(paymentDTO, employeeDTO, new BigDecimal("45.0"));
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 45.0);
+        assertEquals(payments.size(), 1);
+        checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("45.0"));
     }
 
     @Test
@@ -79,8 +81,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, new BigDecimal("30.0"));
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        assertEquals(payments.size(), 1);
+        checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }
 
     @Test
@@ -113,8 +116,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox, rewardDTO);
 
         // check payments
-        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, new BigDecimal("30.0"));
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        assertEquals(payments.size(), 1);
+        checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }
 
     @Test
@@ -148,11 +152,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox2, rewardDTO2);
 
         // check payments
-        PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, new BigDecimal("45.0"));
+        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(), 45.0);
+        assertEquals(payments1.size(), 1);
+        checkPayment(payments1.getFirst(), employeeDTO1, new BigDecimal("45.0"));
 
-        PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, new BigDecimal("45.0"));
+        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(), 45.0);
+        assertEquals(payments2.size(), 1);
+        checkPayment(payments2.getFirst(), employeeDTO2, new BigDecimal("45.0"));
     }
 
     @Test
@@ -194,11 +200,13 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkOutbox(outbox2, rewardDTO2);
 
         // check payments
-        PaymentDTO paymentDTO1 = getPayment(employeeDTO1.getId(), 45.0);
-        checkPayment(paymentDTO1, employeeDTO1, new BigDecimal("45.0"));
+        List<PaymentDTO> payments1 = getPayments(employeeDTO1.getId(), 45.0);
+        assertEquals(payments1.size(), 1);
+        checkPayment(payments1.getFirst(), employeeDTO1, new BigDecimal("45.0"));
 
-        PaymentDTO paymentDTO2 = getPayment(employeeDTO2.getId(), 45.0);
-        checkPayment(paymentDTO2, employeeDTO2, new BigDecimal("45.0"));
+        List<PaymentDTO> payments2 = getPayments(employeeDTO2.getId(), 45.0);
+        assertEquals(payments2.size(), 1);
+        checkPayment(payments2.getFirst(), employeeDTO2, new BigDecimal("45.0"));
     }
 
     @Test
@@ -231,8 +239,9 @@ class RewardCalculationServiceTest extends RewardApplicationAcceptanceTest {
         checkReward(rewardDTO, employeeDTO, "HELP", "PAID");
 
         // check payments
-        PaymentDTO paymentDTO = getPayment(employeeDTO.getId(), 30.0);
-        checkPayment(paymentDTO, employeeDTO, new BigDecimal("30.0"));
+        List<PaymentDTO> payments = getPayments(employeeDTO.getId(), 30.0);
+        assertEquals(payments.size(), 1);
+        checkPayment(payments.getFirst(), employeeDTO, new BigDecimal("30.0"));
     }
 
     private void checkReward(RewardDTO rewardDTO, EmployeeDTO employeeDTO, String jobType, String status) {

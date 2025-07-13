@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,17 +23,24 @@ public class SearchPaymentController {
     @GetMapping(path = "/search",
             produces = "application/json")
     public SearchPaymentResponse searchPayment(@RequestParam(required = true) Long employeeId,
-                                               @RequestParam(required = true) Double amount) {
-        PaymentDTO paymentDTO = searchPaymentInDB(employeeId,amount);
+                                               @RequestParam(required = false) Double amount) {
+        List<PaymentDTO> paymentDTO = searchPaymentInDB(employeeId,amount);
         return new SearchPaymentResponse(paymentDTO);
     }
 
-    private PaymentDTO searchPaymentInDB(Long employeeId,Double amount){
-        Optional<Payment> payment = paymentRepository.findByEmployeeIdAndAmount(employeeId, BigDecimal.valueOf(amount));
-        if(payment.isPresent()){
-            return createPaymentDTO(payment.get());
-        }
-        throw new IllegalArgumentException("Payment not found by employeeId " + employeeId + " and amount " + amount);
+    private List<PaymentDTO> searchPaymentInDB(Long employeeId,Double amount){
+        List<PaymentDTO> payment = getPayments(employeeId, amount)
+                .stream()
+                .map(this::createPaymentDTO)
+                .toList();
+        if(payment.isEmpty()) throw new IllegalArgumentException("Payment not found by employeeId " + employeeId + " and amount " + amount);
+        return payment;
+    }
+
+    private List<Payment> getPayments(Long employeeId,Double amount){
+        return amount == null
+                ? paymentRepository.findByEmployeeId(employeeId)
+                : paymentRepository.findByEmployeeIdAndAmount(employeeId, BigDecimal.valueOf(amount));
     }
 
     private PaymentDTO createPaymentDTO(Payment payment){

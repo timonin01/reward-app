@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.List;
 
 public abstract class RewardApplicationAcceptanceTest {
 
@@ -32,7 +33,7 @@ public abstract class RewardApplicationAcceptanceTest {
 
     private SearchPaymentAction searchPaymentAction;
 
-    @BeforeEach
+//    @BeforeEach
     public void setup() {
         cleanRewardDatabaseAction = new CleanRewardDatabaseAction();
         cleanPaymentDatabaseAction = new CleanPaymentDatabaseAction();
@@ -88,8 +89,12 @@ public abstract class RewardApplicationAcceptanceTest {
         rewardCalculationAction.calculateRewards();
     }
 
-    public PaymentDTO getPayment(Long employeeId, Double amount) {
-        return searchPaymentAction.getPayment(employeeId, amount);
+    public List<PaymentDTO> getPayments(Long employeeId, Double amount) {
+        return searchPaymentAction.getPayments(employeeId, amount);
+    }
+
+    public List<PaymentDTO> getPayments(Long employeeId) {
+        return searchPaymentAction.getPayments(employeeId, null);
     }
 
     public RewardDTO getReward(Long rewardId) {

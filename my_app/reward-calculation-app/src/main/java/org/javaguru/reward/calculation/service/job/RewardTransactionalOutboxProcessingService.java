@@ -27,7 +27,7 @@ public class RewardTransactionalOutboxProcessingService {
         // send to reward-payment-app
         try {
             Reward reward = rewardTransactionalOutbox.getReward();
-            RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getAmount());
+            RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getId(), reward.getAmount());
 
         // update reward status
         if (PaymentStatus.SUCCESS.name().equals(paymentResponse.getStatus())) {

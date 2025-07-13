@@ -1,6 +1,7 @@
 package org.javaguru.reward.payment.rest;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ import java.math.BigDecimal;
 public class RewardPaymentRequest {
 
     private Long employeeId;
+
+    private Long rewardId;
 
     @JsonDeserialize(using = BigDecimalJsonDeserializer.class)
     private BigDecimal amount;

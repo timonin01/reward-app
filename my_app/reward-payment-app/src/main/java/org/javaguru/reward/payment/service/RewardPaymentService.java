@@ -17,9 +17,10 @@ public class RewardPaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public void pay(Long employeeId, BigDecimal amount) {
+    public void pay(Long employeeId,Long rewardId, BigDecimal amount) {
         Payment payment = new Payment();
         payment.setEmployeeId(employeeId);
+        payment.setRewardId(rewardId);
         payment.setAmount(amount);
         paymentRepository.save(payment);
     }

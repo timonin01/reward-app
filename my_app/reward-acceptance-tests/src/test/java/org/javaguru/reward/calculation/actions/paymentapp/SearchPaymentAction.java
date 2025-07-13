@@ -6,23 +6,25 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 public class SearchPaymentAction {
 
     private static String baseUrl = "http://localhost:8090/api/test/payment/search";
 
-    public PaymentDTO getPayment(Long employeeId, Double amount) {
+    public List<PaymentDTO> getPayments(Long employeeId, Double amount) {
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("employeeId", employeeId)
-                .queryParam("amount", amount)
-                .build()
-                .toUri();
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("employeeId", employeeId);
+        if (amount != null) {
+            builder = builder.queryParam("amount", amount);
+        }
+        URI uri = builder.build().toUri();
 
         RestTemplate restTemplate = new RestTemplate();
         SearchPaymentResponse response = restTemplate.getForObject(uri, SearchPaymentResponse.class);
 
-        return response.getPaymentDTO();
+        return response.getPaymentsDTO();
     }
 
 }

@@ -20,8 +20,8 @@ public class RewardPaymentClient {
     private final RestClient rewardPaymentRestClient;
 
     @Retry(name = RetryConfig.PAY_REWARD_CONFIG, fallbackMethod = "fallback")
-    public RewardPaymentResponse payReward(Long employeeId, BigDecimal amount) {
-        RewardPaymentRequest request = new RewardPaymentRequest(employeeId, amount);
+    public RewardPaymentResponse payReward(Long employeeId, Long rewardId,BigDecimal amount) {
+        RewardPaymentRequest request = new RewardPaymentRequest(employeeId, rewardId, amount);
 
         return rewardPaymentRestClient.post()
                 .uri("/reward/payment/")

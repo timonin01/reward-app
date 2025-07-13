@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class RewardPaymentRequest {
 
     private Long employeeId;
+    private Long rewardId;
 
     @JsonDeserialize(using = BigDecimalJsonDeserializer.class)
     private BigDecimal amount;
