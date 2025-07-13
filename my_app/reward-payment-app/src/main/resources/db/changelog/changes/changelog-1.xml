@@ -25,4 +25,13 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="tim" id="3">
+        <createIndex indexName="idx_payments_employee_id_reward_id"
+                     tableName="payments"
+                     unique="true">
+            <column name="employee_id"/>
+            <column name="reward_id"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
