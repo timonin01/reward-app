@@ -23,8 +23,11 @@ public class RewardTransactionalOutboxJob {
     public void doJob() {
         log.info("RewardTransactionalOutboxJob started");
 
-        rewardTransactionalOutboxRepository.findByStatus(TransactionalOutboxStatus.NEW)
-                        .forEach(rewardTransactionalOutboxProcessingService::process);
+        rewardTransactionalOutboxRepository
+                .findByStatus(TransactionalOutboxStatus.NEW)
+                .forEach(rewardTransactionalOutbox ->
+                        rewardTransactionalOutboxProcessingService.process(rewardTransactionalOutbox.getId()));
+
 
         log.info("RewardTransactionalOutboxJob finished");
     }

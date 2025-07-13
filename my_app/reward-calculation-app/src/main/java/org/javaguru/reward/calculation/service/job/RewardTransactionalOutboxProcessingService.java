@@ -21,20 +21,34 @@ public class RewardTransactionalOutboxProcessingService {
     private final RewardPaymentClient rewardPaymentClient;
 
     @Transactional
-    public void process(RewardTransactionalOutbox rewardTransactionalOutbox) {
-        log.info("Start processing rewardTransactionalOutbox with id = " + rewardTransactionalOutbox.getId());
+    public void process(Long rewardTransactionalOutboxId) {
+        log.info("Start processing rewardTransactionalOutbox with id = " + rewardTransactionalOutboxId);
 
-        // send to reward-payment-app
         try {
-            Reward reward = rewardTransactionalOutbox.getReward();
-            RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getId(), reward.getAmount());
+            RewardTransactionalOutbox rewardTransactionalOutbox = rewardTransactionalOutboxRepository
+                    .findByIdWithLock(rewardTransactionalOutboxId)
+                    .orElseThrow(() -> new IllegalArgumentException("Unknown rewardTransactionalOutbox with id = " + rewardTransactionalOutboxId));
+
+            if (TransactionalOutboxStatus.NEW == rewardTransactionalOutbox.getStatus()) {
+                processTransactionalOutbox(rewardTransactionalOutbox);
+            } else {
+                log.info("Transactional Outbox already processed! with id = " + rewardTransactionalOutboxId);
+            }
+        } catch (Throwable e) {
+            log.error("Transactional Outbox exception", e);
+        }
+        log.info("Finish processing rewardTransactionalOutbox with id = " + rewardTransactionalOutboxId);
+    }
+
+    private void processTransactionalOutbox(RewardTransactionalOutbox rewardTransactionalOutbox) {
+        // send to reward-payment-app
+        Reward reward = rewardTransactionalOutbox.getReward();
+        RewardPaymentResponse paymentResponse = rewardPaymentClient.payReward(reward.getEmployeeId(), reward.getId(), reward.getAmount());
 
         // update reward status
         if (PaymentStatus.SUCCESS.name().equals(paymentResponse.getStatus())) {
-            log.info("Set RewardStatus to PAID");
             reward.setRewardStatus(RewardStatus.PAID);
         } else {
-            log.info("Set RewardStatus to NOT_PAID");
             reward.setRewardStatus(RewardStatus.NOT_PAID);
         }
         rewardRepository.save(reward);
@@ -42,11 +56,5 @@ public class RewardTransactionalOutboxProcessingService {
         // update transactional outbox status
         rewardTransactionalOutbox.setStatus(TransactionalOutboxStatus.PROCESSED);
         rewardTransactionalOutboxRepository.save(rewardTransactionalOutbox);
-        }catch (Throwable e) {
-            log.error("Transactional Outbox exception", e);
-        }
-
-        log.info("Finish processing rewardTransactionalOutbox with id = " + rewardTransactionalOutbox.getId());
     }
-
 }
