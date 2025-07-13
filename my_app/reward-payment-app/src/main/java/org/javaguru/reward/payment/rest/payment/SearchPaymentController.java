@@ -56,6 +56,7 @@ public class SearchPaymentController {
         paymentDTO.setEmployeeId(payment.getEmployeeId());
         paymentDTO.setRewardId(payment.getRewardId());
         paymentDTO.setAmount(payment.getAmount());
+        paymentDTO.setPaymentHash(payment.getPaymentHash());
         return paymentDTO;
     }
 

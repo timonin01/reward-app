@@ -35,4 +35,7 @@ public class Payment {
     @Column(name = "amount", precision = 10, scale = 2)
     private BigDecimal amount;
 
+    @Column(name = "payment_hash")
+    private String paymentHash;
+
 }

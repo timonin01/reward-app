@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author = "tim" id = "4">
+        <addColumn tableName="payments">
+            <column name="payment_hash" type="VARCHAR(200)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="tim" id="5">
+        <createIndex indexName="idx_payments_payment_hash"
+                     tableName="payments"
+                     unique="true">
+            <column name="payment_hash"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

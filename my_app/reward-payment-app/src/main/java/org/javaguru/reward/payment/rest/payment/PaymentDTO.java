@@ -25,4 +25,6 @@ public class PaymentDTO {
 
     private BigDecimal amount;
 
+    private String paymentHash;
+
 }

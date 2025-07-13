@@ -17,6 +17,7 @@ import java.util.Optional;
 public class RewardPaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final  RewardPaymentHashGenerator rewardPaymentHashGenerator;
 
     @Transactional
     public void pay(Long employeeId,Long rewardId, BigDecimal amount) {
@@ -25,6 +26,7 @@ public class RewardPaymentService {
             payment.setEmployeeId(employeeId);
             payment.setRewardId(rewardId);
             payment.setAmount(amount);
+            payment.setPaymentHash(rewardPaymentHashGenerator.generateHash(employeeId,rewardId,amount));
             paymentRepository.save(payment);
         }
     }
