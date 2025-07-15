@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Service
+//@Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class RewardTransactionalOutboxJob {
 
     private final RewardTransactionalOutboxProcessingService rewardTransactionalOutboxProcessingService;
     private final RewardTransactionalOutboxRepository rewardTransactionalOutboxRepository;
 
-    @Scheduled(fixedRate = 5, timeUnit = TimeUnit.SECONDS)
+//    @Scheduled(fixedRate = 5, timeUnit = TimeUnit.SECONDS)
     public void doJob() {
         log.info("RewardTransactionalOutboxJob started");
 
