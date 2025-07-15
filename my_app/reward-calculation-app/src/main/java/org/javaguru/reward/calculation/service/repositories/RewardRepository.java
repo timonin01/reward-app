@@ -1,6 +1,7 @@
 package org.javaguru.reward.calculation.service.repositories;
 
 import jakarta.persistence.LockModeType;
+import jakarta.transaction.Transactional;
 import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.domain.RewardStatus;

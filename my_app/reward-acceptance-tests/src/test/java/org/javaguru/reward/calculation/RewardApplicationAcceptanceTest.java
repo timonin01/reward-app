@@ -33,7 +33,7 @@ public abstract class RewardApplicationAcceptanceTest {
 
     private SearchPaymentAction searchPaymentAction;
 
-//    @BeforeEach
+    @BeforeEach
     public void setup() {
         cleanRewardDatabaseAction = new CleanRewardDatabaseAction();
         cleanPaymentDatabaseAction = new CleanPaymentDatabaseAction();

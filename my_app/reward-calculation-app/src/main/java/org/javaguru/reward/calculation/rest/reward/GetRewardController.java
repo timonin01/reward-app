@@ -2,6 +2,7 @@ package org.javaguru.reward.calculation.rest.reward;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.javaguru.reward.calculation.rest.employee.EmployeeDTO;
 import org.javaguru.reward.calculation.rest.employee.GetEmployeeResponse;
 import org.javaguru.reward.calculation.service.domain.Employee;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/test/reward")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -23,12 +25,14 @@ public class GetRewardController {
             produces = "application/json")
     public GetRewardResponse createReward(@PathVariable Long id) {
         RewardDTO dto = searchEmployeeInDb(id);
+        log.info("Send successful response");
         return new GetRewardResponse(dto);
     }
 
     private RewardDTO searchEmployeeInDb(Long id){
         Optional<Reward> reward = rewardRepository.findById(id);
         if(reward.isPresent()){
+            log.info("Creating DTO");
             return createRewardDTO(reward.get());
         }
         throw new IllegalArgumentException("Reward not found by id " + id);
