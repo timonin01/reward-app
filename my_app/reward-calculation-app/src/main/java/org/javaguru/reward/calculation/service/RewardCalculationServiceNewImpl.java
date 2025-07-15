@@ -23,7 +23,7 @@ public class RewardCalculationServiceNewImpl implements RewardCalculationService
     @Override
     public void calculateRewards(List<Employee> employees) {
         employees.forEach(employee ->  findAllRewardsByEmployeeIdAndRewardStatusAndJobType(employee)
-                .forEach(reward -> rewardCalculationProcessRewardService.processReward(employee,reward))
+                .forEach(reward -> rewardCalculationProcessRewardService.processReward(employee,reward.getId()))
         );
     }
 

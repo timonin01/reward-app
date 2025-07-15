@@ -24,7 +24,8 @@ public class RewardCalculationProcessRewardService {
     private final RewardTransactionalOutboxRepository rewardTransactionalOutboxRepository;
 
     @Transactional
-    public void processReward(Employee employee, Reward reward){
+    public void processReward(Employee employee, Long rewardId){
+        Reward reward = rewardRepository.findById(rewardId).get();
         Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
         if (tariff.isPresent()) {
             BigDecimal amount = calculateAmount(employee, tariff.get());
