@@ -9,6 +9,7 @@ import org.javaguru.reward.calculation.service.domain.Employee;
 import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.domain.RewardStatus;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;

@@ -1,6 +1,5 @@
 package org.javaguru.reward.calculation.service;
 
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +11,7 @@ import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

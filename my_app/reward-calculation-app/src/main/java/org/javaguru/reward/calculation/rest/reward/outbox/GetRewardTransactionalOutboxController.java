@@ -6,6 +6,7 @@ import org.javaguru.reward.calculation.service.domain.Reward;
 import org.javaguru.reward.calculation.service.domain.RewardTransactionalOutbox;
 import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardTransactionalOutboxRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,6 @@ public class GetRewardTransactionalOutboxController {
 
     private final RewardTransactionalOutboxRepository rewardTransactionalOutboxRepository;
     private final RewardRepository rewardRepository;
-
 
     @GetMapping(path = "/{rewardId}",
             produces = "application/json")

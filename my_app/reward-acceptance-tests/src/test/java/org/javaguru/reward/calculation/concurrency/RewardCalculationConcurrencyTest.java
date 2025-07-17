@@ -32,12 +32,12 @@ public class RewardCalculationConcurrencyTest
         createAllowedToPayJobType("SPEECH");
 
         EmployeeDTO employee1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
-        Thread thread1 = new Thread(new EmployeeThread(
+        Thread thread1 = new Thread(new EmployeeThread(this,
                 employee1, REWARD_COUNT_PER_EMPLOYEE, "HELP"
         ));
 
         EmployeeDTO employee2 = createEmployee("Mister", "Y", BigDecimal.valueOf(0.5));
-        Thread thread2 = new Thread(new EmployeeThread(
+        Thread thread2 = new Thread(new EmployeeThread(this,
                 employee2, REWARD_COUNT_PER_EMPLOYEE, "SPEECH"
         ));
 
@@ -70,17 +70,17 @@ public class RewardCalculationConcurrencyTest
         createAllowedToPayJobType("LESSON");
 
         EmployeeDTO employee1 = createEmployee("Mister", "X", BigDecimal.valueOf(0.5));
-        Thread thread1 = new Thread(new EmployeeThread(
+        Thread thread1 = new Thread(new EmployeeThread(this,
                 employee1, REWARD_COUNT_PER_EMPLOYEE, "HELP"
         ));
 
         EmployeeDTO employee2 = createEmployee("Mister", "Y", BigDecimal.valueOf(0.5));
-        Thread thread2 = new Thread(new EmployeeThread(
+        Thread thread2 = new Thread(new EmployeeThread(this,
                 employee2, REWARD_COUNT_PER_EMPLOYEE, "SPEECH"
         ));
 
         EmployeeDTO employee3 = createEmployee("Mister", "Z", BigDecimal.valueOf(0.5));
-        Thread thread3 = new Thread(new EmployeeThread(
+        Thread thread3 = new Thread(new EmployeeThread(this,
                 employee3, REWARD_COUNT_PER_EMPLOYEE, "LESSON"
         ));
 

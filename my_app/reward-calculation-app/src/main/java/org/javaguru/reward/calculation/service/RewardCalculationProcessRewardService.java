@@ -1,6 +1,5 @@
 package org.javaguru.reward.calculation.service;
 
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.javaguru.reward.calculation.service.repositories.RewardRepository;
 import org.javaguru.reward.calculation.service.repositories.RewardTransactionalOutboxRepository;
 import org.javaguru.reward.calculation.service.repositories.TariffRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,7 +25,7 @@ public class RewardCalculationProcessRewardService {
 
     @Transactional
     public void processReward(Employee employee, Long rewardId){
-        Reward reward = rewardRepository.findById(rewardId).get();
+        Reward reward = rewardRepository.findByIdWithLock(rewardId).get();
         Optional<Tariff> tariff = tariffRepository.findByJobType(reward.getJobType());
         if (tariff.isPresent()) {
             BigDecimal amount = calculateAmount(employee, tariff.get());

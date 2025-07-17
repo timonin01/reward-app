@@ -1,6 +1,5 @@
 package org.javaguru.reward.calculation.service.job;
 
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.javaguru.reward.calculation.service.repositories.RewardTransactionalO
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentClient;
 import org.javaguru.reward.calculation.service.restclient.RewardPaymentResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -20,7 +20,7 @@ public class RewardTransactionalOutboxProcessingService {
     private final RewardRepository rewardRepository;
     private final RewardPaymentClient rewardPaymentClient;
 
-    @Transactional
+    @Transactional(readOnly = false)
     public void process(Long rewardTransactionalOutboxId) {
         log.info("Start processing rewardTransactionalOutbox with id = " + rewardTransactionalOutboxId);
 
