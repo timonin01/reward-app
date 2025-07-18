@@ -1,5 +1,6 @@
 package org.javaguru.reward.calculation.service.repositories;
 
+import io.micrometer.core.annotation.Timed;
 import org.javaguru.reward.calculation.config.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Tariff;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
 
+    @Timed(value = "jpa_TariffRepository_findByJobType", histogram = true)
     @Cacheable(cacheNames = LocalCacheConfig.TARIFF_CACHE, key = "#p0")
     Optional<Tariff> findByJobType(JobType jobType);
 
