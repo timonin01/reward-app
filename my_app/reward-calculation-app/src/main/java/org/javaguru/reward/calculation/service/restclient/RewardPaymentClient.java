@@ -1,6 +1,8 @@
 package org.javaguru.reward.calculation.service.restclient;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class RewardPaymentClient {
 
         return rewardPaymentRestClient.post()
                 .uri("/reward/payment/")
+                .header("traceparent", buildTraceParent())
                 .body(request)
                 .retrieve()
                 .body(RewardPaymentResponse.class);
@@ -40,6 +43,22 @@ public class RewardPaymentClient {
                         + " amount = " + amount
                 , ex);
         throw ex;
+    }
+
+    private String buildTraceParent() {
+        Span currentSpan = Span.current();
+        SpanContext spanContext = currentSpan.getSpanContext();
+
+        if (spanContext.isValid()) {
+            String traceId = spanContext.getTraceId();
+            String spanId = spanContext.getSpanId();
+            String traceFlags = spanContext.getTraceFlags().asHex(); // "01" for sampled, "00" for not sampled
+
+            // Construct traceparent header manually
+            return "00-" + traceId + "-" + spanId + "-" + traceFlags;
+        } else {
+            return "";
+        }
     }
 
 }

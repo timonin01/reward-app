@@ -166,6 +166,25 @@ services:
       reward-payment-app-instance-2:
         condition: service_healthy
 
+  jaeger:
+    networks: [tim-network]
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=debug
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "4318:4318"  # OTLP HTTP receiver
+    depends_on:
+      reward-calculation-app-instance-1:
+        condition: service_healthy
+      reward-calculation-app-instance-2:
+        condition: service_healthy
+      reward-payment-app-instance-1:
+        condition: service_healthy
+      reward-payment-app-instance-2:
+        condition: service_healthy
+
 
 volumes:
   redis_data:

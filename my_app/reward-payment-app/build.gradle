@@ -41,6 +41,10 @@ dependencies {
 	implementation ("io.micrometer:micrometer-core:latest.release")
 	implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
 
+	implementation 'io.opentelemetry:opentelemetry-api:1.30.0'
+	implementation 'io.opentelemetry:opentelemetry-exporter-jaeger:1.30.0'
+	implementation 'io.opentelemetry:opentelemetry-sdk:1.30.0'
+
 	compileOnly('org.projectlombok:lombok:1.18.32')
 	annotationProcessor('org.projectlombok:lombok:1.18.32')
 
