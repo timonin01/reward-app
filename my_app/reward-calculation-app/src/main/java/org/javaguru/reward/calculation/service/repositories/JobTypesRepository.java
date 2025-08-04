@@ -1,7 +1,7 @@
 package org.javaguru.reward.calculation.service.repositories;
 
 import io.micrometer.core.annotation.Timed;
-import org.javaguru.reward.calculation.config.LocalCacheConfig;
+import org.javaguru.reward.calculation.config.cache.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.JobTypes;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface JobTypesRepository extends JpaRepository<JobTypes,Long> {

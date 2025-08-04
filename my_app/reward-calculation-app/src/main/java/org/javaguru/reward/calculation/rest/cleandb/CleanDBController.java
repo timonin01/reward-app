@@ -2,7 +2,7 @@ package org.javaguru.reward.calculation.rest.cleandb;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.javaguru.reward.calculation.config.LocalCacheConfig;
+import org.javaguru.reward.calculation.config.cache.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.repositories.*;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;

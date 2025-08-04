@@ -1,7 +1,7 @@
 package org.javaguru.reward.calculation.service.repositories;
 
 import io.micrometer.core.annotation.Timed;
-import org.javaguru.reward.calculation.config.LocalCacheConfig;
+import org.javaguru.reward.calculation.config.cache.LocalCacheConfig;
 import org.javaguru.reward.calculation.service.domain.JobType;
 import org.javaguru.reward.calculation.service.domain.Tariff;
 import org.springframework.cache.annotation.Cacheable;
