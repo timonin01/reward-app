@@ -2,6 +2,7 @@ package org.javaguru.reward.calculation.config.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @EnableCaching
 @Configuration
+@ConditionalOnProperty(name = "caffeine.cache.enabled", havingValue = "true")
 public class LocalCacheConfig {
 
     public static final String TARIFF_CACHE = "tariffCache";
